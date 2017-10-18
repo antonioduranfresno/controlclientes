@@ -137,7 +137,7 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		}
 		
 		model.addAttribute("tercero", tercero);	
-		model.addAttribute("listaTercerosGrupo", terceroGrupoService.listarTercerosGrupo());
+		model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());
 		model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
 		model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());
 		
@@ -164,7 +164,7 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		}
 		
 		if(result.hasErrors()){			
-			model.addAttribute("listaTercerosGrupo", terceroGrupoService.listarTercerosGrupo());			
+			model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());			
 			model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
 			model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());
 			return "terceroForm";			
@@ -200,7 +200,7 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
                 
                 result.addError(error);     
                 
-    			model.addAttribute("listaTercerosGrupo", terceroGrupoService.listarTercerosGrupo());			
+    			model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());			
     			model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
     			model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());    
     			
