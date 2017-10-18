@@ -44,6 +44,9 @@
                                 <li>
                                     <a href="terceroLista"><i class="fa fa-users fa-fw"></i> Terceros</a>
                                 </li>
+                                <li>
+                                    <a href="terceroGrupoLista"><i class="fa fa-users fa-fw"></i> Grupos terceros</a>
+                                </li>
                             </ul>                          
                         </li>    
                                    	                        

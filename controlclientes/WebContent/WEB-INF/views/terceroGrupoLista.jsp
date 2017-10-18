@@ -31,24 +31,24 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Terceros <small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Grupos Terceros <small>(${numeroRegistros})</small>
                     
-                    <a href="tercerosExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
-                    <a href="terceroForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+                    <a href="tercerosGrupoExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
+                    <a href="terceroGrupoForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
                     </h2>
                 </div>                                
            </div>
            
-           <sf:form method="post" action="buscarTerceros">
+           <sf:form method="post" action="buscarTercerosGrupo">
            
            <div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-8">
 				
-		           <a href="terceroListaMoverAPaginaPrimera" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
-		           <a href="terceroListaMoverAPaginaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
+		           <a href="terceroGrupoListaMoverAPaginaPrimera" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
+		           <a href="terceroGrupoListaMoverAPaginaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
 		           Página ${paginaActual} de ${numeroPaginas}
-		           <a href="terceroListaMoverAPaginaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
-		           <a href="terceroListaMoverAPaginaUltima" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
+		           <a href="terceroGrupoListaMoverAPaginaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
+		           <a href="terceroGrupoListaMoverAPaginaUltima" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
 				
 				</div>
 				<div class="col-sm-1" >
@@ -69,44 +69,16 @@
 		   
 		   </sf:form>
 		   
-		   <table id='tablaTerceros' class='table table-hover table-striped table-condensed table-bordered'>
+		   <table id='tablaGrupoTerceros' class='table table-hover table-striped table-condensed table-bordered'>
 						
 				<thead>
 					<tr class="info">						
-						<th width="33%;">
-							<a href="${encabezados['tercero'].hrefOrden}">${encabezados['tercero'].label} 
-								<span class="${encabezados['tercero'].classOrden}"></span>								
+						<th width="50%;">
+							<a href="${encabezados['nombre'].hrefOrden}">${encabezados['nombre'].label} 
+								<span class="${encabezados['nombre'].classOrden}"></span>								
 							</a>
 						</th>
-						<th width="14%;">
-							<a href="${encabezados['grupo'].hrefOrden}">${encabezados['grupo'].label} 
-								<span class="${encabezados['grupo'].classOrden}"></span>								
-							</a>
 						
-						</th>
-						<th width="14%;">
-							<a href="${encabezados['tipo'].hrefOrden}">${encabezados['tipo'].label} 
-								<span class="${encabezados['tipo'].classOrden}"></span>								
-							</a>
-							
-						</th>
-						<th width="12%;">
-							<a href="${encabezados['marketLine'].hrefOrden}">${encabezados['marketLine'].label} 
-								<span class="${encabezados['marketLine'].classOrden}"></span>								
-							</a>
-							
-						</th>
-						<th width="7%;">
-							<a href="${encabezados['maf'].hrefOrden}">${encabezados['maf'].label} 
-								<span class="${encabezados['maf'].classOrden}"></span>								
-							</a>
-														
-						</th>
-						<th width="8%;">
-							<a href="${encabezados['noValido'].hrefOrden}">${encabezados['noValido'].label} 
-								<span class="${encabezados['noValido'].classOrden}"></span>								
-							</a>
-						</th>
 						<th width="6%;"></th>
 						<th width="6%;"></th>
 					</tr>
@@ -118,22 +90,17 @@
 				    </c:when>
 				</c:choose>	
 							
-				<c:forEach items="${listaTerceros}" var="c" varStatus="index">
+				<c:forEach items="${lista}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.toStringCodigoTercero()}</td>
-						<td>${c.terceroGrupo.tegr_nombre}</td>
-						<td>${c.terceroTipo.teti_nombre}</td>
-						<td>${c.terceroMarketLine.teml_nombre}</td>
-						<td>${c.terc_Maf == true ? 'Sí' : 'No'}</td>
-						<td>${c.terc_noValido == true ? 'Sí' : 'No'}</td>
-						<td style="text-align: center;"><a href="terceroForm?idTercero=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
-						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'tercero');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
+						<td>${c.tegr_nombre()}</td>
+						<td style="text-align: center;"><a href="terceroGrupoForm?idTerceroGrupo=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
+						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'terceroGrupo');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>
 			
 				</c:forEach>
 			
-		    </table>    
+		    </table>	     
 		    		            
         </div>
     </div>

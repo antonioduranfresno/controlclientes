@@ -41,7 +41,7 @@ public class TerceroGrupoDaoImpl implements TerceroGrupoDao{
 	}
 
 	@Override
-	public TerceroGrupo buscarTerceroGrupo(Integer id) {
+	public TerceroGrupo buscarId(Integer id) {
 		
 		Criteria crit = getSession().createCriteria(Tercero.class);
 		
@@ -52,9 +52,37 @@ public class TerceroGrupoDaoImpl implements TerceroGrupoDao{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroGrupo> listarTercerosGrupo() {		
+	public List<TerceroGrupo> listado() {		
 		
 		Query query = getSession().createQuery("from TerceroGrupo");
+				
+		return query.list();
+	}
+		
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TerceroGrupo> listadoOrdenado(String campoOrden) {		
+		
+		if (campoOrden.equals("")) {
+			return listado();
+		} else {
+			Query query = getSession().createQuery("from TerceroGrupo order by "+campoOrden);
+		
+			return query.list();
+		}
+		
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TerceroGrupo> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+		String orden = "";
+		if (campoOrden.equals("")) {
+			orden = "";
+		} else {
+			orden = " order by " + campoOrden;
+		}
+		Query query = getSession().createQuery("from TerceroGrupo" + orden).setFirstResult(primero).setMaxResults(maximo);
 				
 		return query.list();
 	}

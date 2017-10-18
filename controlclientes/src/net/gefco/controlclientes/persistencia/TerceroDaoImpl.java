@@ -40,7 +40,7 @@ public class TerceroDaoImpl implements TerceroDao{
 	}
 
 	@Override
-	public Tercero buscarTercero(Integer id) {
+	public Tercero buscarId(Integer id) {
 		
 		Criteria crit = getSession().createCriteria(Tercero.class);
 		
@@ -51,7 +51,7 @@ public class TerceroDaoImpl implements TerceroDao{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Tercero> listarTerceros() {		
+	public List<Tercero> listado() {		
 		
 		Query query = getSession().createQuery("from Tercero");
 				
@@ -60,18 +60,28 @@ public class TerceroDaoImpl implements TerceroDao{
 		
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Tercero> listarTercerosOrdenados(String campoOrden) {		
+	public List<Tercero> listadoOrdenado(String campoOrden) {		
 		
-		Query query = getSession().createQuery("from Tercero order by "+campoOrden);
+		if (campoOrden.equals("")) {
+			return listado();
+		} else {
+			Query query = getSession().createQuery("from Tercero order by "+campoOrden);
 		
-		return query.list();
+			return query.list();
+		}
+		
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Tercero> listarTercerosPaginados(Integer primero, Integer maximo, String campoOrden) {		
-		
-		Query query = getSession().createQuery("from Tercero order by "+campoOrden).setFirstResult(primero).setMaxResults(maximo);
+	public List<Tercero> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+		String orden = "";
+		if (campoOrden.equals("")) {
+			orden = "";
+		} else {
+			orden = " order by " + campoOrden;
+		}
+		Query query = getSession().createQuery("from Tercero" + orden).setFirstResult(primero).setMaxResults(maximo);
 				
 		return query.list();
 	}

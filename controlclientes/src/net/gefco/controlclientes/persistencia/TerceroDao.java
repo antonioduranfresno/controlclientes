@@ -6,18 +6,18 @@ import net.gefco.controlclientes.modelo.Tercero;
 
 public interface TerceroDao {
 
-	public void guardar(Tercero tercero);
+	public void 			guardar(Tercero tercero);
 	
-	public void actualizar(Tercero tercero);
+	public void 			actualizar(Tercero tercero);
 	
-	public void eliminar(Tercero tercero);
+	public void 			eliminar(Tercero tercero);
 
-	public Tercero buscarTercero(Integer id);
+	public Tercero 			buscarId(Integer id);
 	
-	public List<Tercero> listarTerceros();
+	public List<Tercero> 	listado();
 
-	public List<Tercero> listarTercerosOrdenados(String campoOrden);
+	public List<Tercero> 	listadoOrdenado(String campoOrden);
 	
-	public List<Tercero> listarTercerosPaginados(Integer primero, Integer maximo, String campoOrden);
+	public List<Tercero> 	listadoPaginado(Integer primero, Integer maximo, String campoOrden);
 
 }
