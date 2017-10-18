@@ -235,7 +235,7 @@ input[readonly] {
 
 .derecha a{
 	float: right;
-	margin: 4px 0px 2px 0;
+	margin: 4px 0px 2px 5px;
 	width: 100px;
 }
 

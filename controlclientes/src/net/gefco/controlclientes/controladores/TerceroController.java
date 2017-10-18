@@ -1,8 +1,12 @@
 package net.gefco.controlclientes.controladores;
 
+import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import net.gefco.controlclientes.modelo.Tercero;
@@ -10,6 +14,8 @@ import net.gefco.controlclientes.negocio.TerceroGrupoService;
 import net.gefco.controlclientes.negocio.TerceroMarketLineService;
 import net.gefco.controlclientes.negocio.TerceroService;
 import net.gefco.controlclientes.negocio.TerceroTipoService;
+import net.gefco.controlclientes.util.AbstractDataTable;
+import net.gefco.controlclientes.util.DataTableColumn;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -24,11 +30,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope("session")
 @SessionAttributes("usuarioSesion")
-public class TerceroController {
+public class TerceroController extends AbstractDataTable<Tercero, TerceroService> {
 	
 	@Autowired
 	private TerceroService 				terceroService;
@@ -42,133 +49,94 @@ public class TerceroController {
 	@Autowired
 	private TerceroTipoService 			terceroTipoService;
 	
-	//Paginación
-    private int paginaActual			= 1;
-    private int numeroPaginas			= 0;
-    private int registrosPorPagina		= 50;
-    
-    private String textoBusqueda		= "";
-    private String orden				= "terc_codigo ASC";
-    		
-	@RequestMapping(value = "/terceroLista", method = RequestMethod.GET)
-	public String lista(Model model, @ModelAttribute("tercero") Tercero tercero){		
-		
-		List<Tercero> listaResultados	= new ArrayList<Tercero>();
+	DecimalFormat 						format		= new DecimalFormat("#,###,###,##0.##");
 
-		if(textoBusqueda.equals("")){
-			
-			listaResultados = terceroService.listarTercerosOrdenados(orden);
-			
-			if(listaResultados.size()%registrosPorPagina==0){
-				numeroPaginas = listaResultados.size()/registrosPorPagina;
-			}else{
-				numeroPaginas = listaResultados.size()/registrosPorPagina + 1;
-			}
-			
-			model.addAttribute("paginaActual", paginaActual);
-			model.addAttribute("numeroPaginas", numeroPaginas);			
-			model.addAttribute("listaTerceros", terceroService.listarTercerosPaginados((paginaActual - 1) * registrosPorPagina, registrosPorPagina, orden));
-			
-		}else{
-			
-			for(Tercero terc : terceroService.listarTercerosOrdenados(orden)){
-				if(terc.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
-					listaResultados.add(terc);
-				}
-			}
-			
-			model.addAttribute("textoBuscar", textoBusqueda);
-			model.addAttribute("paginaActual", 1);
-			model.addAttribute("numeroPaginas", 1);			
-			model.addAttribute("listaTerceros", listaResultados);
-		}
+	@PostConstruct
+	public void iniciarControler() {
 		
-		System.out.println(orden);
+		service 		= terceroService;
+		paginaLista 	= "terceroLista";
+		orden			= "";
 		
+		encabezados = new HashMap<String, DataTableColumn>();
+		encabezados.put("tercero", 		new DataTableColumn("Tercero", 		"terc_codigo", 					paginaLista + "&orden=terc_codigo",						""));
+		encabezados.put("grupo", 		new DataTableColumn("Grupo", 		"terceroGrupo-tegr_nombre", 	paginaLista + "&orden=terceroGrupo-tegr_nombre",		""));
+		encabezados.put("tipo", 		new DataTableColumn("Tipo", 		"terceroTipo-teti_nombre", 		paginaLista + "&orden=terceroTipo-teti_nombre",			""));
+		encabezados.put("marketLine", 	new DataTableColumn("Market Line",	"terceroMarketLine-teml_nombre",paginaLista + "&orden=terceroMarketLine-teml_nombre",	""));
+		encabezados.put("maf", 			new DataTableColumn("MAF", 			"terc_Maf", 					paginaLista + "&orden=terc_Maf",						""));
+		encabezados.put("noValido", 	new DataTableColumn("No vál.", 		"terc_noValido", 				paginaLista + "&orden=terc_noValido",					""));
+		
+	}
+	
+	
+	@RequestMapping(value = "/terceroLista", method = RequestMethod.GET)
+	public String lista(Model model, @ModelAttribute("tercero") Tercero tercero) 
+			throws 	NoSuchMethodException, SecurityException, IllegalAccessException, 
+					IllegalArgumentException, InvocationTargetException{
+						
+		filtrarLista();
+		model.addAttribute("textoBuscar", textoBusqueda);
+		model.addAttribute("paginaActual", paginaActual);
+		model.addAttribute("numeroPaginas", numeroPaginas);			
+		model.addAttribute("listaTerceros", lista);
 		model.addAttribute("orden", orden);
+		model.addAttribute("numeroRegistros", format.format(totalRegistros));
+		
+		model.addAttribute("encabezados", encabezados);
 		
 		return "terceroLista";
 	}
 	
-	@RequestMapping(value = "/terceroListaPrimero", method = RequestMethod.GET)
-	public String listaPrimero(){		
-	
-		paginaActual = 1;
+	@RequestMapping(value = "/terceroListaMoverAPagina{param1}", method = RequestMethod.GET)
+	public String moverAPagina(@PathVariable(value = "param1") String param1){
+		switch (param1) {
+		case "Primera":
+			irAPrimeraPagina();
+			break;
 		
-		return "redirect:/terceroLista";
-	}
-	
-	@RequestMapping(value = "/terceroListaUltimo", method = RequestMethod.GET)
-	public String listaUltimo(){		
-	
-		paginaActual = numeroPaginas;
-		
-		return "redirect:/terceroLista";
-	}
-	
-	@RequestMapping(value = "/terceroListaAnterior", method = RequestMethod.GET)
-	public String listaAnterior(){		
-	
-		paginaActual = paginaActual-1;
-		
-        if (paginaActual < 1) {
-        	paginaActual = 1;
-        }
+		case "Anterior":
+			super.irAPaginaAnterior();
+			break;
 
-		return "redirect:/terceroLista";
-	}
-	
-	@RequestMapping(value = "/terceroListaSiguiente", method = RequestMethod.GET)
-	public String listaSiguiente(){		
-	
-		paginaActual = paginaActual+1;
+		case "Ultima":		
+			super.irAUltimaPagina();
+			break;
 		
-        if (paginaActual > numeroPaginas) {
-        	paginaActual = numeroPaginas;
-        }
-  
-		return "redirect:/terceroLista";
+		case "Siguiente":
+			super.irAPaginaSiguiente();
+			break;
+		}	
+		
+		return "redirect:/" + paginaLista;
 	}
 	
 	@RequestMapping(value = "/terceroLista&orden={campoOrden}", method = RequestMethod.GET)
 	private String ordenar(@PathVariable("campoOrden") String campoOrden){
+		super.ordenarLista(campoOrden);
 		
-		campoOrden = campoOrden.replace("-",".");
-		
-		if(orden.contains(campoOrden)){
-			if(orden.contains("ASC")){
-				orden = orden.replace("ASC", "DESC");	
-			}else{
-				orden = orden.replace("DESC", "ASC");
-			}			
-		}else{
-			orden = campoOrden + " ASC"; //Ponemos guión y replace porque . no funciona en href	
-		}
-		
-		return "redirect:/terceroLista";
+		return "redirect:/" + paginaLista;
 	}
 	
 	@RequestMapping(value = "/buscarTerceros", method = RequestMethod.POST)	
 	public String buscar(Model model, @ModelAttribute("textoBuscar") String textoBuscar){
 		
-		paginaActual  = 1;
+		super.buscar(textoBuscar);
 		
-		textoBusqueda = textoBuscar;
-		
-		return "redirect:/terceroLista";
+		return "redirect:/" + paginaLista;
 	}
 	
 	@RequestMapping(value = "/terceroForm", method = RequestMethod.GET)
 	public String mostrarFormulario(Model model, @RequestParam(value="idTercero",required=false) Integer idTercero){
 				
-		Tercero tercero = terceroService.buscarTercero(idTercero);
+		Tercero tercero = new Tercero();
 		
 		if(idTercero!=null){
-			model.addAttribute("tercero", tercero);	
-		}else{
-			model.addAttribute("tercero", new Tercero());
+
+			tercero = terceroService.buscarId(idTercero);
+			
 		}
 		
+		model.addAttribute("tercero", tercero);	
 		model.addAttribute("listaTercerosGrupo", terceroGrupoService.listarTercerosGrupo());
 		model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
 		model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());
@@ -246,7 +214,7 @@ public class TerceroController {
 	@ResponseBody
 	public String eliminarDeLista(@PathVariable("idTercero") Integer idTercero){
 		
-		Tercero tercero = terceroService.buscarTercero(idTercero);
+		Tercero tercero = terceroService.buscarId(idTercero);
 		
 		try{
 			terceroService.eliminar(tercero);	
@@ -256,5 +224,19 @@ public class TerceroController {
 		}		
 	}
 	
+	
+	@RequestMapping(value = "/tercerosExcel", method = RequestMethod.GET)
+    public ModelAndView descargarExcel() {
+		List <Tercero> listaExcel = new ArrayList<Tercero>();
+		
+		//Aplicar filtro
+		for(Tercero terc : terceroService.listadoOrdenado(orden)){
+			if(terc.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
+				listaExcel.add(terc);
+			}
+		}
+		
+		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);
+    }
 	
 }

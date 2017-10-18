@@ -31,24 +31,24 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Terceros
+                    <h2 class="page-header derecha">Terceros <small>(${numeroRegistros})</small>
                     
+                    <a href="tercerosExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
                     <a href="terceroForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
-                    
                     </h2>
                 </div>                                
-           </div> 
+           </div>
            
            <sf:form method="post" action="buscarTerceros">
            
            <div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-8">
 				
-		           <a href="terceroListaPrimero" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
-		           <a href="terceroListaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
+		           <a href="terceroListaMoverAPaginaPrimera" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
+		           <a href="terceroListaMoverAPaginaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
 		           Página ${paginaActual} de ${numeroPaginas}
-		           <a href="terceroListaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
-		           <a href="terceroListaUltimo" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
+		           <a href="terceroListaMoverAPaginaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
+		           <a href="terceroListaMoverAPaginaUltima" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
 				
 				</div>
 				<div class="col-sm-1" >
@@ -73,12 +73,40 @@
 						
 				<thead>
 					<tr class="info">						
-						<th width="33%;"><a href="terceroLista&orden=terc_codigo" style="color: ${orden.equals('terc_codigo ASC') ? 'red':'blue'}">Tercero</a></th>
-						<th width="15%;"><a href="terceroLista&orden=terceroGrupo-tegr_nombre" >Grupo</a></th>
-						<th width="15%;"><a href="terceroLista&orden=terceroTipo-teti_nombre" >Tipo</a></th>
-						<th width="10%;"><a href="terceroLista&orden=terceroMarketLine-teml_nombre" >Market line</a></th>
-						<th width="7%;"><a href="terceroLista&orden=terc_Maf" >MAF</a></th>
-						<th width="8%;"><a href="terceroLista&orden=terc_noValido" >No vál.</a></th>
+						<th width="33%;">
+							<a href="${encabezados['tercero'].hrefOrden}">${encabezados['tercero'].label} 
+								<span class="${encabezados['tercero'].classOrden}"></span>								
+							</a>
+						</th>
+						<th width="14%;">
+							<a href="${encabezados['grupo'].hrefOrden}">${encabezados['grupo'].label} 
+								<span class="${encabezados['grupo'].classOrden}"></span>								
+							</a>
+						
+						</th>
+						<th width="14%;">
+							<a href="${encabezados['tipo'].hrefOrden}">${encabezados['tipo'].label} 
+								<span class="${encabezados['tipo'].classOrden}"></span>								
+							</a>
+							
+						</th>
+						<th width="12%;">
+							<a href="${encabezados['marketLine'].hrefOrden}">${encabezados['marketLine'].label} 
+								<span class="${encabezados['marketLine'].classOrden}"></span>								
+							</a>
+							
+						</th>
+						<th width="7%;">
+							<a href="${encabezados['maf'].hrefOrden}">${encabezados['maf'].label} 
+								<span class="${encabezados['maf'].classOrden}"></span>								
+							</a>
+														
+						</th>
+						<th width="8%;">
+							<a href="${encabezados['noValido'].hrefOrden}">${encabezados['noValido'].label} 
+								<span class="${encabezados['noValido'].classOrden}"></span>								
+							</a>
+						</th>
 						<th width="6%;"></th>
 						<th width="6%;"></th>
 					</tr>
@@ -120,38 +148,6 @@
 	<script type="text/javascript" src='<c:url value="/res/js/dataTables.bootstrap.js" />'></script>
     <script type="text/javascript" src='<c:url value="/res/js/loading.js" />'></script>
     <script type="text/javascript" src='<c:url value="/res/js/maestro.js" />'></script>
-    
-    <script type="text/javascript">
-    
-    function ordenar(id, objeto){
-		
-    	if(id!=""){
-    		
-
-    			$.ajax({
-    				type	 	: "post",
-    				url      	: objeto+"Lista&id="+id+"/eliminar",
-    				data 	 	: {}		
-    			}).done(function (data) {
-    				if(data=="ok"){
-    					$(location).attr('href',objeto+'Lista?success=true');	
-    				}else{
-    					alert("No se puede eliminar");
-    				}
-    				
-    			}).fail(function (jqXHR, textStatus) {
-    			    console.log("Error: "+textStatus);				
-    			});
-    			
-    					
-    	}else{
-    		alert("No se puede realizar la acción.");
-    	}
-
-    }
-
-	
-    </script>
     
 </body>
 
