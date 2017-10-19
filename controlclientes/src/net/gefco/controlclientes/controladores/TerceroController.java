@@ -69,7 +69,6 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		
 	}
 	
-	
 	@RequestMapping(value = "/terceroLista", method = RequestMethod.GET)
 	public String lista(Model model, @ModelAttribute("tercero") Tercero tercero) 
 			throws 	NoSuchMethodException, SecurityException, IllegalAccessException, 
@@ -81,8 +80,7 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		model.addAttribute("numeroPaginas", numeroPaginas);			
 		model.addAttribute("listaTerceros", lista);
 		model.addAttribute("orden", orden);
-		model.addAttribute("numeroRegistros", format.format(totalRegistros));
-		
+		model.addAttribute("numeroRegistros", format.format(totalRegistros));		
 		model.addAttribute("encabezados", encabezados);
 		
 		return "terceroLista";
@@ -139,8 +137,8 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		
 		model.addAttribute("tercero", tercero);	
 		model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());
-		model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
-		model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());
+		model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listado());
+		model.addAttribute("listaTercerosTipo", terceroTipoService.listado());
 		
 		return "terceroForm";
 	}
@@ -166,8 +164,8 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		
 		if(result.hasErrors()){			
 			model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());			
-			model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
-			model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());
+			model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listado());
+			model.addAttribute("listaTercerosTipo", terceroTipoService.listado());
 			return "terceroForm";			
 		}
 
@@ -201,8 +199,8 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
                 result.addError(error);     
                 
                 model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());
-    			model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
-    			model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());    
+    			model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listado());
+    			model.addAttribute("listaTercerosTipo", terceroTipoService.listado());    
     			
                 return "terceroForm";                
          } 
@@ -220,14 +218,14 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 			return "ok";
 			
 		}catch(Exception e){			
-			return "error";	
-			
+			return "error";
 		}		
 	}
 	
 	
 	@RequestMapping(value = "/tercerosExcel", method = RequestMethod.GET)
     public ModelAndView descargarExcel() {
+		
 		List <Tercero> listaExcel = new ArrayList<Tercero>();
 		
 		//Aplicar filtro
@@ -239,7 +237,6 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 			}
 			
 		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

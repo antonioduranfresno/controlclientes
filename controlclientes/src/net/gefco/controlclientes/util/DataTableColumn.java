@@ -13,7 +13,6 @@ public class DataTableColumn implements Serializable {
 	
 	public DataTableColumn() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public DataTableColumn(String label, String campoHQL, String hrefOrden,

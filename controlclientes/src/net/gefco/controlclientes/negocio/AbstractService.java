@@ -6,7 +6,6 @@ import java.util.List;
 
 public abstract class AbstractService <T, Dao>{
 
-		
 	protected Dao dao				= null;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -42,45 +41,36 @@ public abstract class AbstractService <T, Dao>{
 		return r;
 	}
 	
-	
 	public void guardar(T t) throws InvocationTargetException {	
-		ejecutarMetodo (dao, "guardar", new Object[] {t,"1"});			
+		ejecutarMetodo (dao, "guardar", new Object[] {t});			
 	}
 	
-	public void actualizar(T t) throws InvocationTargetException {	
-		
-		ejecutarMetodo (dao, "actualizar", new Object[] {t});
-			
+	public void actualizar(T t) throws InvocationTargetException {			
+		ejecutarMetodo (dao, "actualizar", new Object[] {t});			
 	}	
 	
 	public void eliminar(T t) throws InvocationTargetException {
-		ejecutarMetodo (dao, "eliminar", new Object[] {t});
-			
+		ejecutarMetodo (dao, "eliminar", new Object[] {t});			
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T buscarId(Integer id) throws InvocationTargetException {	
-		
-		return (T) ejecutarMetodo (dao, "buscarId", new Object[] {id});
-			
+	public T buscarId(Integer id) throws InvocationTargetException {			
+		return (T) ejecutarMetodo (dao, "buscarId", new Object[] {id});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<T> listado() throws InvocationTargetException {
-		return (List<T>) ejecutarMetodo (dao, "listado", new Object[] {});
-			
+		return (List<T>) ejecutarMetodo (dao, "listado", new Object[] {});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<T> listadoOrdenado(String campoOrden) throws InvocationTargetException {	
-		return (List<T>) ejecutarMetodo (dao, "listadoOrdenado", new Object[] {campoOrden});
-			
+		return (List<T>) ejecutarMetodo (dao, "listadoOrdenado", new Object[] {campoOrden});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<T> listadoPaginado (Integer primero, Integer maximo, String campoOrden) throws InvocationTargetException {	
-		return (List<T>) ejecutarMetodo (dao, "listadoPaginado", new Object[] {primero, maximo, campoOrden});
-			
+		return (List<T>) ejecutarMetodo (dao, "listadoPaginado", new Object[] {primero, maximo, campoOrden});			
 	}
 	
 }

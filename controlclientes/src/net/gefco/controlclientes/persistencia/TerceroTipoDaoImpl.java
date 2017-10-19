@@ -2,7 +2,6 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
-import net.gefco.controlclientes.modelo.Tercero;
 import net.gefco.controlclientes.modelo.TerceroTipo;
 
 import org.hibernate.Criteria;
@@ -41,9 +40,9 @@ public class TerceroTipoDaoImpl implements TerceroTipoDao{
 	}
 
 	@Override
-	public TerceroTipo buscarTerceroTipo(Integer id) {
+	public TerceroTipo buscarId(Integer id) {
 		
-		Criteria crit = getSession().createCriteria(Tercero.class);
+		Criteria crit = getSession().createCriteria(TerceroTipo.class);
 		
 		crit.add(Restrictions.eq("id", id));
 		
@@ -52,9 +51,37 @@ public class TerceroTipoDaoImpl implements TerceroTipoDao{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroTipo> listarTercerosTipo() {		
+	public List<TerceroTipo> listado() {		
 		
 		Query query = getSession().createQuery("from TerceroTipo");
+				
+		return query.list();
+	}
+		
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TerceroTipo> listadoOrdenado(String campoOrden) {		
+		
+		if (campoOrden.equals("")) {
+			return listado();
+		} else {
+			Query query = getSession().createQuery("from TerceroTipo order by "+campoOrden);
+		
+			return query.list();
+		}
+		
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TerceroTipo> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+		String orden = "";
+		if (campoOrden.equals("")) {
+			orden = "";
+		} else {
+			orden = " order by " + campoOrden;
+		}
+		Query query = getSession().createQuery("from TerceroTipo" + orden).setFirstResult(primero).setMaxResults(maximo);
 				
 		return query.list();
 	}

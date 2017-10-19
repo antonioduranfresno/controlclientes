@@ -43,10 +43,16 @@
                             <ul class="nav nav-second-level collapse in">                               
                                 <li>
                                     <a href="terceroLista"><i class="fa fa-users fa-fw"></i> Terceros</a>
+                                </li>                                
+                                <li>
+                                    <a href="terceroGrupoLista"><i class="fa fa-object-group fa-fw"></i> Grupos </a>
                                 </li>
                                 <li>
-                                    <a href="terceroGrupoLista"><i class="fa fa-users fa-fw"></i> Grupos terceros</a>
+                                    <a href="terceroMarketLineLista"><i class="fa fa-industry fa-fw"></i> Market Lines</a>
                                 </li>
+                                <li>
+                                    <a href="terceroTipoLista"><i class="fa fa-cubes fa-fw"></i> Tipos</a>
+                                </li>                                
                             </ul>                          
                         </li>    
                                    	                        

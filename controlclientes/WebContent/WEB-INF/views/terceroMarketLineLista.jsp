@@ -31,24 +31,24 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Grupos <small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Market Lines <small>(${numeroRegistros})</small>
                     
-                    <a href="tercerosGrupoExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
-                    <a href="terceroGrupoForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+                    <a href="tercerosMarketLineExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
+                    <a href="terceroMarketLineForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
                     </h2>
                 </div>                                
            </div>
            
-           <sf:form method="post" action="buscarTercerosGrupo">
+           <sf:form method="post" action="buscarTercerosMarketLine">
            
            <div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-8">
 				
-		           <a href="terceroGrupoListaMoverAPaginaPrimera" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
-		           <a href="terceroGrupoListaMoverAPaginaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
+		           <a href="terceroMarketLineListaMoverAPaginaPrimera" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
+		           <a href="terceroMarketLineListaMoverAPaginaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
 		           Página ${paginaActual} de ${numeroPaginas}
-		           <a href="terceroGrupoListaMoverAPaginaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
-		           <a href="terceroGrupoListaMoverAPaginaUltima" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
+		           <a href="terceroMarketLineListaMoverAPaginaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
+		           <a href="terceroMarketLineListaMoverAPaginaUltima" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
 				
 				</div>
 				<div class="col-sm-1" >
@@ -69,7 +69,7 @@
 		   
 		   </sf:form>
 		   
-		   <table id='tablaGrupoTerceros' class='table table-hover table-striped table-condensed table-bordered'>
+		   <table id='tablaMarketLineTerceros' class='table table-hover table-striped table-condensed table-bordered'>
 						
 				<thead>
 					<tr class="info">						
@@ -93,9 +93,9 @@
 				<c:forEach items="${lista}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.tegr_nombre}</td>
-						<td style="text-align: center;"><a href="terceroGrupoForm?idTerceroGrupo=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
-						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'terceroGrupo');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
+						<td>${c.teml_nombre}</td>
+						<td style="text-align: center;"><a href="terceroMarketLineForm?idTerceroMarketLine=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
+						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'terceroMarketLine');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>
 			
 				</c:forEach>

@@ -11,8 +11,7 @@ public abstract class AbstractDataTable<T, Service> {
 	
 //	CONSTRUCTOR
 	public AbstractDataTable() {
-		super();
-		
+		super();		
 	}
 	
 	protected List<T> lista = new ArrayList<T>();
@@ -96,26 +95,21 @@ public abstract class AbstractDataTable<T, Service> {
 	}
     
 	protected void irAPrimeraPagina(){		
-	
-		paginaActual = 1;
-		
+		paginaActual = 1;		
 	}
 	
 	
-	protected void irAUltimaPagina(){		
-	
-		paginaActual = numeroPaginas;
-		
+	protected void irAUltimaPagina(){	
+		paginaActual = numeroPaginas;		
 	}
 	
-	protected void irAPaginaAnterior(){		
+	protected void irAPaginaAnterior(){	
 	
 		paginaActual = paginaActual-1;
 		
         if (paginaActual < 1) {
         	paginaActual = 1;
         }
-
 	}
 	
 	protected void irAPaginaSiguiente(){		
@@ -124,11 +118,11 @@ public abstract class AbstractDataTable<T, Service> {
 		
         if (paginaActual > numeroPaginas) {
         	paginaActual = numeroPaginas;
-        }
-  
+        }  
 	}
 	
 	protected void ordenarLista(String campoNuevoOrden){
+		
 		String ordenConPuntos = campoNuevoOrden.replace("-",".");
 				
 		if(orden.contains(ordenConPuntos)){
@@ -142,6 +136,7 @@ public abstract class AbstractDataTable<T, Service> {
 		}
 		
 		for (Map.Entry<String, DataTableColumn> entry : encabezados.entrySet()) {
+			
 		    DataTableColumn value = entry.getValue();
 		    
 		    if ( value.getHrefOrden().contains(campoNuevoOrden) ) {
