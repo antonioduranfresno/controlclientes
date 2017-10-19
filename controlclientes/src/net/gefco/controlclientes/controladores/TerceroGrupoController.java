@@ -110,7 +110,7 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 	}
 	
 	@RequestMapping(value = "/terceroGrupoForm", method = RequestMethod.GET)
-	public String mostrarFormulario(Model model, @RequestParam(value="idTerceroGrupo",required=false) Integer idTerceroGrupo){
+	public String mostrarFormulario(Model model, @RequestParam(value="idTerceroGrupo",required=false) Integer idTerceroGrupo) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 				
 		TerceroGrupo terceroGrupo = new TerceroGrupo();
 		
@@ -168,9 +168,9 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 			
 	}
 	
-	@RequestMapping(value = "/terceroGrupoLista&id={idTercero}/eliminar", method = RequestMethod.POST)
+	@RequestMapping(value = "/terceroGrupoLista&id={idTerceroGrupo}/eliminar", method = RequestMethod.POST)
 	@ResponseBody
-	public String eliminarDeLista(@PathVariable("idTerceroGrupo") Integer idTerceroGrupo){
+	public String eliminarDeLista(@PathVariable("idTerceroGrupo") Integer idTerceroGrupo) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
 		TerceroGrupo terceroGrupo = terceroGrupoService.buscarId(idTerceroGrupo);
 		
@@ -184,7 +184,7 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 	
 	
 	@RequestMapping(value = "/tercerosGrupoExcel", method = RequestMethod.GET)
-    public ModelAndView descargarExcel() {
+    public ModelAndView descargarExcel() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		List <TerceroGrupo> listaExcel = new ArrayList<TerceroGrupo>();
 		
 		//Aplicar filtro
@@ -194,7 +194,7 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 			}
 		}
 		
-		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);
+		return new ModelAndView("excelViewTercerosGrupo", "tercerosGrupoExcel", listaExcel);
     }
 	
 }

@@ -2,7 +2,6 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
-import net.gefco.controlclientes.modelo.Tercero;
 import net.gefco.controlclientes.modelo.TerceroGrupo;
 
 import org.hibernate.Criteria;
@@ -43,7 +42,7 @@ public class TerceroGrupoDaoImpl implements TerceroGrupoDao{
 	@Override
 	public TerceroGrupo buscarId(Integer id) {
 		
-		Criteria crit = getSession().createCriteria(Tercero.class);
+		Criteria crit = getSession().createCriteria(TerceroGrupo.class);
 		
 		crit.add(Restrictions.eq("id", id));
 		
