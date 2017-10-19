@@ -2,7 +2,6 @@ function eliminar(id, objeto){
 		
 	if(id!=""){
 		if(confirm("¿Desea eliminar el registro?")){
-
 			$.ajax({
 				type	 	: "post",
 				url      	: objeto+"Lista&id="+id+"/eliminar",

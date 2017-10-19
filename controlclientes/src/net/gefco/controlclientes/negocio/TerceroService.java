@@ -17,6 +17,7 @@ public class TerceroService extends AbstractService<Tercero, TerceroDao>{
 	@PostConstruct
 	public void iniciarService() {
 		super.dao = terceroDao;
+		
 	}
 
 }

@@ -93,7 +93,7 @@
 				<c:forEach items="${lista}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.tegr_nombre()}</td>
+						<td>${c.tegr_nombre}</td>
 						<td style="text-align: center;"><a href="terceroGrupoForm?idTerceroGrupo=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
 						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'terceroGrupo');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>

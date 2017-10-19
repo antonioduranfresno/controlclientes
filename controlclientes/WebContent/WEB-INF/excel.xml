@@ -4,5 +4,6 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-      <bean id="excelViewTerceros" class="net.gefco.controlclientes.excel.ExcelBuilderTerceros" />   
+      <bean id="excelViewTerceros" class="net.gefco.controlclientes.excel.ExcelBuilderTerceros" />  
+      <bean id="excelViewTercerosGrupo" class="net.gefco.controlclientes.excel.ExcelBuilderTercerosGrupo" />   
 </beans>
