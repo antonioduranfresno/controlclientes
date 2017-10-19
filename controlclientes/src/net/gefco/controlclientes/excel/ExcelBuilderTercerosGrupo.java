@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.gefco.controlclientes.modelo.Tercero;
 import net.gefco.controlclientes.modelo.TerceroGrupo;
 
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -43,7 +42,7 @@ public class ExcelBuilderTercerosGrupo extends AbstractXlsView {
 
         //Creación de la fila títulos
         Row header = sheet.createRow(0);
-        header.createCell(1).setCellValue("GRUPO");
+        header.createCell(0).setCellValue("GRUPO");
         
 
         // Creación de las celdas

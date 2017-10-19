@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 @SessionAttributes("usuarioSesion")
 public class TerceroController extends AbstractDataTable<Tercero, TerceroService> {
 	
+	
 	@Autowired
 	private TerceroService 				terceroService;
 	
@@ -126,7 +127,7 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 	}
 	
 	@RequestMapping(value = "/terceroForm", method = RequestMethod.GET)
-	public String mostrarFormulario(Model model, @RequestParam(value="idTercero",required=false) Integer idTercero){
+	public String mostrarFormulario(Model model, @RequestParam(value="idTercero",required=false) Integer idTercero) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 				
 		Tercero tercero = new Tercero();
 		
@@ -146,7 +147,7 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 	
 	//Tanto para crear uno nuevo como para editar uno existente
 	@RequestMapping(value = "/terceroForm", method = RequestMethod.POST, params="action=Aceptar")
-	public String aceptar(Model model,@ModelAttribute("tercero") @Valid Tercero tercero, BindingResult result){
+	public String aceptar(Model model,@ModelAttribute("tercero") @Valid Tercero tercero, BindingResult result) throws InvocationTargetException {
 		
 		if(tercero.getTerceroGrupo().getId()==0){			
 			FieldError error = new FieldError("tercero", "terceroGrupo.id", "Por favor, seleccione una opción");			
@@ -186,21 +187,20 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
             
 			return "redirect:/terceroLista?success=true";
 							                
-         } catch (Exception e) {
+         } catch (InvocationTargetException e) {
         	 
                 FieldError error;
-                                
-                if(e.toString().contains("key 2")){
+                if(e.getCause().toString().contains("key 2") || e.getCause().toString().contains("terc_codigo")){
                 	error = new FieldError("tercero", "terc_codigo", "Código de tercero ya existente.");
-                }else if(e.toString().contains("key 3")){
+                }else if(e.getCause().toString().contains("key 3") || e.getCause().toString().contains("terc_razonSocial")){
                 	error = new FieldError("tercero", "terc_razonSocial", "Razón Social ya existente.");
                 }else{
-                	error = new FieldError("tercero", "terc_codigo", "error no controlado: " + e.getMessage());
+                	error = new FieldError("tercero", "terc_codigo", "error no controlado: " + e.getCause().getMessage());
                 }
                 
                 result.addError(error);     
                 
-    			model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());			
+                model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());
     			model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listarTercerosMarketLine());
     			model.addAttribute("listaTercerosTipo", terceroTipoService.listarTercerosTipo());    
     			
@@ -214,13 +214,14 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 	@ResponseBody
 	public String eliminarDeLista(@PathVariable("idTercero") Integer idTercero){
 		
-		Tercero tercero = terceroService.buscarId(idTercero);
-		
 		try{
+			Tercero tercero = terceroService.buscarId(idTercero);
 			terceroService.eliminar(tercero);	
-			return "ok";			
+			return "ok";
+			
 		}catch(Exception e){			
-			return "error";			
+			return "error";	
+			
 		}		
 	}
 	
@@ -230,10 +231,17 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		List <Tercero> listaExcel = new ArrayList<Tercero>();
 		
 		//Aplicar filtro
-		for(Tercero terc : terceroService.listadoOrdenado(orden)){
-			if(terc.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
-				listaExcel.add(terc);
+		try {
+			for(Tercero terc : terceroService.listadoOrdenado(orden)){
+				if(terc.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
+					listaExcel.add(terc);
+				}
 			}
+			
+		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
 		}
 		
 		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);

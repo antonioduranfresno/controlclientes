@@ -31,29 +31,32 @@ public abstract class AbstractDataTable<T, Service> {
 		
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Object ejecutarMetodo (Object instanciaClase, String metodo, Object [] parametros) 
-			throws 	NoSuchMethodException, SecurityException, IllegalAccessException, 
-					IllegalArgumentException, InvocationTargetException{
+			throws 	InvocationTargetException {
 
 		Class tipoClase 	= instanciaClase.getClass();
 		Method 		m 		= null;
 		Object 		r		= null;
-		
-		if (parametros.length == 0) {
-			m = tipoClase.getMethod(metodo);
-			r = m.invoke(instanciaClase);
-						
-		} else {
-
-			Class [] clasesParametros 	= new Class [parametros.length];
-			
-			for (int i = 0; i < parametros.length; i++) {
+		try{
+			if (parametros.length == 0) {
+				m = tipoClase.getMethod(metodo);
+				r = m.invoke(instanciaClase);
+							
+			} else {
+	
+				Class [] clasesParametros 	= new Class [parametros.length];
 				
-				clasesParametros [i] =parametros[i].getClass();
+				for (int i = 0; i < parametros.length; i++) {
+					
+					clasesParametros [i] =parametros[i].getClass();
+				}
+				
+				m = tipoClase.getMethod(metodo, clasesParametros);
+				r = m.invoke(instanciaClase, parametros);
+				
 			}
-			
-			m = tipoClase.getMethod(metodo, clasesParametros);
-			r = m.invoke(instanciaClase, parametros);
-			
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException |IllegalArgumentException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		
 		return r;
@@ -61,7 +64,7 @@ public abstract class AbstractDataTable<T, Service> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void filtrarLista () throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected void filtrarLista () throws InvocationTargetException {	
 		lista = new ArrayList<T>();
 		
 		if(textoBusqueda.equals("")){
@@ -139,7 +142,6 @@ public abstract class AbstractDataTable<T, Service> {
 		}
 		
 		for (Map.Entry<String, DataTableColumn> entry : encabezados.entrySet()) {
-//		    String key = entry.getKey();
 		    DataTableColumn value = entry.getValue();
 		    
 		    if ( value.getHrefOrden().contains(campoNuevoOrden) ) {
