@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix ="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="es">
   <head>
     <meta charset="UTF-8">
@@ -31,7 +32,7 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Comerciales <small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Comerciales <small>(<fmt:formatNumber type = "number" pattern="#,##0" value = "${numeroRegistros}" />) </small>
                     
                     <a href="comercialesExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
                     <a href="comercialForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>

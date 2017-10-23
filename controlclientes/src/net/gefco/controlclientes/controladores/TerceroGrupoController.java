@@ -1,9 +1,8 @@
 package net.gefco.controlclientes.controladores;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -38,18 +37,21 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 	@Autowired
 	private TerceroGrupoService 		terceroGrupoService;
 	
-	
-	DecimalFormat 						format		= new DecimalFormat("#,###,###,##0.##");
-
 	@PostConstruct
 	public void iniciarControler() {
 		
-		service 		= terceroGrupoService;
-		paginaLista 	= "terceroGrupoLista";
-		orden			= "";
+		dt_service 			= terceroGrupoService;
+		dt_paginaLista 		= "terceroGrupoLista";
+		dt_orden			= "";
+		dt_HQLfrom			= "TerceroGrupo tg";
+				
+		dt_columnas = new LinkedHashMap<String, DataTableColumn>();
+		dt_columnas.put("id",  					new DataTableColumn("Id", 			Integer.class, 	"tg.id"));	
+		dt_columnas.put("nombre", 				new DataTableColumn("Nombre", 		String.class,	"tg.tegr_nombre"));
 		
-		encabezados = new HashMap<String, DataTableColumn>();
-		encabezados.put("nombre", new DataTableColumn("Nombre",	"tegr_nombre", paginaLista + "&orden=tegr_nombre", ""));
+		//No olvidar llamar a este método después de configurar las columnas.
+		iniciarControllerAbstract();
+		
 	}
 	
 	
@@ -59,14 +61,14 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 					IllegalArgumentException, InvocationTargetException{
 						
 		filtrarLista();
-		model.addAttribute("textoBuscar", textoBusqueda);
-		model.addAttribute("paginaActual", paginaActual);
-		model.addAttribute("numeroPaginas", numeroPaginas);			
-		model.addAttribute("lista", lista);
-		model.addAttribute("orden", orden);
-		model.addAttribute("numeroRegistros", format.format(totalRegistros));
 		
-		model.addAttribute("encabezados", encabezados);
+		model.addAttribute("textoBuscar", 			dt_textoBusqueda);
+		model.addAttribute("paginaActual", 			dt_paginaActual);
+		model.addAttribute("numeroPaginas", 		dt_numeroPaginas);
+		model.addAttribute("listaTercerosGrupo",	dt_lista);
+		model.addAttribute("columnas", 				dt_columnas);
+		model.addAttribute("orden", 				dt_orden);
+		model.addAttribute("numeroRegistros", 		dt_totalRegistros);		
 		
 		return "terceroGrupoLista";
 	}
@@ -91,14 +93,14 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 			break;
 		}	
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/terceroGrupoLista&orden={campoOrden}", method = RequestMethod.GET)
 	private String ordenar(@PathVariable("campoOrden") String campoOrden){
 		super.ordenarLista(campoOrden);
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/buscarTercerosGrupo", method = RequestMethod.POST)	
@@ -106,7 +108,7 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 		
 		super.buscar(textoBuscar);
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/terceroGrupoForm", method = RequestMethod.GET)
@@ -188,8 +190,8 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 		List <TerceroGrupo> listaExcel = new ArrayList<TerceroGrupo>();
 		
 		//Aplicar filtro
-		for(TerceroGrupo tg : terceroGrupoService.listadoOrdenado(orden)){
-			if(tg.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
+		for(TerceroGrupo tg : terceroGrupoService.listadoOrdenado(dt_orden)){
+			if(tg.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
 				listaExcel.add(tg);
 			}
 		}

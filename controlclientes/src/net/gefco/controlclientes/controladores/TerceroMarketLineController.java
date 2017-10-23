@@ -1,9 +1,8 @@
 package net.gefco.controlclientes.controladores;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -38,18 +37,22 @@ public class TerceroMarketLineController extends AbstractDataTable<TerceroMarket
 	@Autowired
 	private TerceroMarketLineService 		terceroMarketLineService;
 	
-	
-	DecimalFormat 						format		= new DecimalFormat("#,###,###,##0.##");
 
 	@PostConstruct
 	public void iniciarControler() {
 		
-		service 		= terceroMarketLineService;
-		paginaLista 	= "terceroMarketLineLista";
-		orden			= "";
+		dt_service 			= terceroMarketLineService;
+		dt_paginaLista 		= "terceroMarketLineLista";
+		dt_orden			= "";
+		dt_HQLfrom			= "TerceroMarketLine tml";
+				
+		dt_columnas = new LinkedHashMap<String, DataTableColumn>();
+		dt_columnas.put("id",  					new DataTableColumn("Id", 			Integer.class, 	"tml.id"));	
+		dt_columnas.put("nombre", 				new DataTableColumn("Nombre", 		String.class,	"tml.teml_nombre"));
 		
-		encabezados = new HashMap<String, DataTableColumn>();
-		encabezados.put("nombre", new DataTableColumn("Nombre",	"teml_nombre", paginaLista + "&orden=teml_nombre", ""));
+		//No olvidar llamar a este método después de configurar las columnas.
+		iniciarControllerAbstract();
+		
 	}
 	
 	
@@ -58,15 +61,15 @@ public class TerceroMarketLineController extends AbstractDataTable<TerceroMarket
 			throws 	NoSuchMethodException, SecurityException, IllegalAccessException, 
 					IllegalArgumentException, InvocationTargetException{
 						
-		filtrarLista();
-		model.addAttribute("textoBuscar", textoBusqueda);
-		model.addAttribute("paginaActual", paginaActual);
-		model.addAttribute("numeroPaginas", numeroPaginas);			
-		model.addAttribute("lista", lista);
-		model.addAttribute("orden", orden);
-		model.addAttribute("numeroRegistros", format.format(totalRegistros));
+filtrarLista();
 		
-		model.addAttribute("encabezados", encabezados);
+		model.addAttribute("textoBuscar", 				dt_textoBusqueda);
+		model.addAttribute("paginaActual", 				dt_paginaActual);
+		model.addAttribute("numeroPaginas", 			dt_numeroPaginas);
+		model.addAttribute("listaTercerosMarketLine",	dt_lista);
+		model.addAttribute("columnas", 					dt_columnas);
+		model.addAttribute("orden", 					dt_orden);
+		model.addAttribute("numeroRegistros", 			dt_totalRegistros);
 		
 		return "terceroMarketLineLista";
 	}
@@ -91,14 +94,14 @@ public class TerceroMarketLineController extends AbstractDataTable<TerceroMarket
 			break;
 		}	
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/terceroMarketLineLista&orden={campoOrden}", method = RequestMethod.GET)
 	private String ordenar(@PathVariable("campoOrden") String campoOrden){
 		super.ordenarLista(campoOrden);
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/buscarTercerosMarketLine", method = RequestMethod.POST)	
@@ -106,7 +109,7 @@ public class TerceroMarketLineController extends AbstractDataTable<TerceroMarket
 		
 		super.buscar(textoBuscar);
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/terceroMarketLineForm", method = RequestMethod.GET)
@@ -188,8 +191,8 @@ public class TerceroMarketLineController extends AbstractDataTable<TerceroMarket
 		List <TerceroMarketLine> listaExcel = new ArrayList<TerceroMarketLine>();
 		
 		//Aplicar filtro
-		for(TerceroMarketLine tg : terceroMarketLineService.listadoOrdenado(orden)){
-			if(tg.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
+		for(TerceroMarketLine tg : terceroMarketLineService.listadoOrdenado(dt_orden)){
+			if(tg.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
 				listaExcel.add(tg);
 			}
 		}

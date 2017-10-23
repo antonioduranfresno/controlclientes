@@ -1,8 +1,7 @@
 package net.gefco.controlclientes.controladores;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import javax.annotation.PostConstruct;
 
@@ -30,27 +29,29 @@ public class FacturacionController extends AbstractDataTable<Facturacion, Factur
 	
 	@Autowired
 	private FacturacionService 			facturacionService;
-	
-	DecimalFormat 						format		= new DecimalFormat("#,###,###,##0.##");
 
 	@PostConstruct
 	public void iniciarControler() {
 		
-		service 		= facturacionService;
-		paginaLista 	= "facturacionLista";
-		orden			= "";
+		dt_service 			= facturacionService;
+		dt_paginaLista 		= "facturacionLista";
+		dt_orden			= "";
+		dt_HQLfrom			= "Facturacion f";
 		
-		encabezados = new HashMap<String, DataTableColumn>();
-		encabezados.put("periodo", 	new DataTableColumn("Periodo", "fact_periodo", paginaLista + "&orden=fact_periodo", ""));
-		encabezados.put("tercero", new DataTableColumn("Tercero", "tercero-terc_codigo", paginaLista + "&orden=tercero-terc_codigo", ""));
-		encabezados.put("agencia", new DataTableColumn("Agencia", "agencia-agen_codigo", paginaLista + "&orden=agencia-agen_codigo", ""));
-		encabezados.put("actividad", new DataTableColumn("Act.", "actividad-acti_codigo", paginaLista + "&orden=actividad-acti_codigo", ""));
-		encabezados.put("ventaAgencia",	new DataTableColumn("Venta Ag", "fact_ventaAgencia", paginaLista + "&orden=fact_ventaAgencia", ""));
-		encabezados.put("compraAgencia", new DataTableColumn("Compra Ag", "fact_compraAgencia", paginaLista + "&orden=fact_compraAgencia", ""));
-		encabezados.put("margen", new DataTableColumn("Margen", "margenAgencia", paginaLista + "&orden=margenAgencia", ""));
-		encabezados.put("ventaSap", new DataTableColumn("Venta SAP", "fact_ventaAgenciaSAP", paginaLista + "&orden=fact_ventaAgenciaSAP", ""));
-		encabezados.put("ventaGlobal", new DataTableColumn("Venta Gl", "fact_ventaGlobal", paginaLista + "&orden=fact_ventaGlobal", ""));
-		encabezados.put("compraGlobal", new DataTableColumn("Compra Gl", "fact_compraGlobal", paginaLista + "&orden=fact_compraGlobal", ""));
+		dt_columnas = new LinkedHashMap<String, DataTableColumn>();
+		
+		dt_columnas.put("id",  				new DataTableColumn("Id", 			Integer.class, 		"f.id"));
+		dt_columnas.put("periodo", 			new DataTableColumn("Periodo", 		Integer.class, 		"f.fact_periodo"));
+		dt_columnas.put("tercero", 			new DataTableColumn("Tercero", 		String.class, 		"concat(f.tercero.terc_codigo, ' - ', f.tercero.terc_razonSocial)"));
+		dt_columnas.put("agencia", 			new DataTableColumn("Agencia", 		String.class, 		"f.agencia.agen_codigo"));
+		dt_columnas.put("actividad", 		new DataTableColumn("Act.", 		String.class,		"f.actividad.acti_codigo"));
+		dt_columnas.put("ventaAgencia",		new DataTableColumn("Venta Ag", 	Double.class, 		"f.fact_ventaAgencia"));
+		dt_columnas.put("compraAgencia", 	new DataTableColumn("Compra Ag", 	Double.class,		"f.fact_compraAgencia"));
+		dt_columnas.put("margen", 			new DataTableColumn("Margen", 		Double.class,		"f.fact_compraAgencia")); //No tenemos margen en bbdd
+		dt_columnas.put("ventaSap", 		new DataTableColumn("Venta SAP", 	Double.class, 		"f.fact_ventaAgenciaSAP"));
+		
+		//No olvidar llamar a este método después de configurar las columnas.
+		iniciarControllerAbstract();
 	}
 	
 	@RequestMapping(value = "/facturacionLista", method = RequestMethod.GET)
@@ -59,13 +60,14 @@ public class FacturacionController extends AbstractDataTable<Facturacion, Factur
 					IllegalArgumentException, InvocationTargetException{
 						
 		filtrarLista();
-		model.addAttribute("textoBuscar", textoBusqueda);
-		model.addAttribute("paginaActual", paginaActual);
-		model.addAttribute("numeroPaginas", numeroPaginas);			
-		model.addAttribute("listaFacturacion", lista);
-		model.addAttribute("orden", orden);
-		model.addAttribute("numeroRegistros", format.format(totalRegistros));		
-		model.addAttribute("encabezados", encabezados);
+		
+		model.addAttribute("textoBuscar", 		dt_textoBusqueda);
+		model.addAttribute("paginaActual", 		dt_paginaActual);
+		model.addAttribute("numeroPaginas", 	dt_numeroPaginas);
+		model.addAttribute("listaFacturacion", 	dt_lista);
+		model.addAttribute("columnas", 			dt_columnas);
+		model.addAttribute("orden", 			dt_orden);
+		model.addAttribute("numeroRegistros", 	dt_totalRegistros);		
 		
 		return "facturacionLista";
 	}
@@ -90,7 +92,7 @@ public class FacturacionController extends AbstractDataTable<Facturacion, Factur
 			break;
 		}	
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/facturacionLista&orden={campoOrden}", method = RequestMethod.GET)
@@ -98,7 +100,7 @@ public class FacturacionController extends AbstractDataTable<Facturacion, Factur
 		
 		super.ordenarLista(campoOrden);
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/buscarFacturacion", method = RequestMethod.POST)	
@@ -106,7 +108,7 @@ public class FacturacionController extends AbstractDataTable<Facturacion, Factur
 		
 		super.buscar(textoBuscar);
 		
-		return "redirect:/" + paginaLista;
+		return "redirect:/" + dt_paginaLista;
 	}
 	
 	@RequestMapping(value = "/facturacionForm", method = RequestMethod.GET)
@@ -122,7 +124,7 @@ public class FacturacionController extends AbstractDataTable<Facturacion, Factur
 		
 		model.addAttribute("facturacion", facturacion);	
 		
-		return "terceroForm";
+		return "facturacionForm";
 	}
 	
 	/*
