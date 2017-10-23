@@ -2,9 +2,11 @@ package net.gefco.controlclientes.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+@Entity
 public class ActividadGrupo implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -50,4 +52,11 @@ public class ActividadGrupo implements Serializable{
 		id = 0;
 		acgr_nombre = "";
 	}
+
+	@Override
+	public String toString() {
+		return "ActividadGrupo [id=" + id + ", acgr_nombre=" + acgr_nombre
+				+ "]";
+	}
+		
 }

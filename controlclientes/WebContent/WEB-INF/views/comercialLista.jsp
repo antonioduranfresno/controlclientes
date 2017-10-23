@@ -31,24 +31,24 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Grupos de Tercero<small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Comerciales <small>(${numeroRegistros})</small>
                     
-                    <a href="tercerosGrupoExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
-                    <a href="terceroGrupoForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
+                    <a href="comercialesExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
+                    <a href="comercialForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
                     </h2>
                 </div>                                
            </div>
            
-           <sf:form method="post" action="buscarTercerosGrupo">
+           <sf:form method="post" action="buscarComerciales">
            
            <div class="row" style="margin-bottom: 10px;">
 				<div class="col-sm-8">
 				
-		           <a href="terceroGrupoListaMoverAPaginaPrimera" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
-		           <a href="terceroGrupoListaMoverAPaginaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
+		           <a href="comercialListaMoverAPaginaPrimera" class="btn btn-default"><i class="glyphicon glyphicon-step-backward"></i></a>           
+		           <a href="comercialListaMoverAPaginaAnterior" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i></a>
 		           Página ${paginaActual} de ${numeroPaginas}
-		           <a href="terceroGrupoListaMoverAPaginaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
-		           <a href="terceroGrupoListaMoverAPaginaUltima" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
+		           <a href="comercialListaMoverAPaginaSiguiente" class="btn btn-default"><i class="glyphicon glyphicon-chevron-right"></i></a>
+		           <a href="comercialListaMoverAPaginaUltima" class="btn btn-default"><i class="glyphicon glyphicon-step-forward"></i></a>					
 				
 				</div>
 				<div class="col-sm-1" >
@@ -69,16 +69,35 @@
 		   
 		   </sf:form>
 		   
-		   <table id='tablaGrupoTerceros' class='table table-hover table-striped table-condensed table-bordered'>
+		   <table id='tablaComerciales' class='table table-hover table-striped table-condensed table-bordered'>
 						
 				<thead>
 					<tr class="info">						
-						<th width="50%;">
-							<a href="${encabezados['nombre'].hrefOrden}">${encabezados['nombre'].label} 
-								<span class="${encabezados['nombre'].classOrden}"></span>								
+						<th width="8%;">
+							<a href="${columnas['codigo'].hrefOrden}">${columnas['codigo'].label} 
+								<span class="${columnas['codigo'].classOrden}"></span>								
 							</a>
 						</th>
-						
+						<th width="16%;">
+							<a href="${columnas['nombre'].hrefOrden}">${columnas['nombre'].label} 
+								<span class="${columnas['nombre'].classOrden}"></span>								
+							</a>						
+						</th>
+						<th width="14%;">
+							<a href="${columnas['agencia'].hrefOrden}">${columnas['agencia'].label} 
+								<span class="${columnas['agencia'].classOrden}"></span>								
+							</a>							
+						</th>
+						<th width="38%;">
+							<a href="${columnas['tipo'].hrefOrden}">${columnas['tipo'].label} 
+								<span class="${columnas['tipo'].classOrden}"></span>								
+							</a>							
+						</th>
+						<th width="12;">
+							<a href="${columnas['suiviEs'].hrefOrden}">${columnas['suiviEs'].label} 
+								<span class="${columnas['suiviEs'].classOrden}"></span>								
+							</a>														
+						</th>						
 						<th width="6%;"></th>
 						<th width="6%;"></th>
 					</tr>
@@ -90,17 +109,21 @@
 				    </c:when>
 				</c:choose>	
 							
-				<c:forEach items="${lista}" var="c" varStatus="index">
+				<c:forEach items="${listaComerciales}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.tegr_nombre}</td>
-						<td style="text-align: center;"><a href="terceroGrupoForm?idTerceroGrupo=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
-						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'terceroGrupo');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
+						<td>${c.codigo}</td>
+						<td>${c.nombre}</td>
+						<td>${c.agencia}</td>
+						<td>${c.tipo}</td>
+						<td>${c.suiviEs}</td>						
+						<td style="text-align: center;"><a href="comercialForm?idComercial=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
+						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'comercial');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>
 			
 				</c:forEach>
 			
-		    </table>	     
+		    </table>    
 		    		            
         </div>
     </div>

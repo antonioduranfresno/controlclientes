@@ -29,7 +29,7 @@
                         </li>                    
                         
 						<li>
-                            <a href="rutaLista" ><i class="fa fa-money fa-fw"></i> FACTURACIÓN</a>
+                            <a href="facturacionLista" ><i class="fa fa-money fa-fw"></i> FACTURACIÓN</a>
                         </li>
                         <li>
                             <a href="rutaLista" ><i class="fa fa-folder-open-o fa-fw"></i> FICHEROS</a>
@@ -52,7 +52,10 @@
                                 </li>
                                 <li>
                                     <a href="terceroTipoLista"><i class="fa fa-cubes fa-fw"></i> Tipos</a>
-                                </li>                                
+                                </li>
+                                <li>
+                                    <a href="comercialLista"><i class="fa fa-thumbs-up fa-fw"></i> Comerciales</a>
+                                </li>                                                                   
                             </ul>                          
                         </li>    
                                    	                        

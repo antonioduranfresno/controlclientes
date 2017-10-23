@@ -1,18 +1,13 @@
 package net.gefco.controlclientes.controladores;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.text.DecimalFormat;
+import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
-import javax.validation.Valid;
 
-import net.gefco.controlclientes.modelo.Tercero;
-import net.gefco.controlclientes.negocio.TerceroGrupoService;
-import net.gefco.controlclientes.negocio.TerceroMarketLineService;
-import net.gefco.controlclientes.negocio.TerceroService;
-import net.gefco.controlclientes.negocio.TerceroTipoService;
+import net.gefco.controlclientes.modelo.Facturacion;
+import net.gefco.controlclientes.negocio.FacturacionService;
 import net.gefco.controlclientes.util.AbstractDataTable;
 import net.gefco.controlclientes.util.DataTableColumn;
 
@@ -20,78 +15,62 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope("session")
 @SessionAttributes("usuarioSesion")
-public class TerceroController extends AbstractDataTable<Tercero, TerceroService> {
+public class FacturacionController extends AbstractDataTable<Facturacion, FacturacionService> {
 	
 	
 	@Autowired
-	private TerceroService 				terceroService;
+	private FacturacionService 			facturacionService;
 	
-	@Autowired
-	private TerceroGrupoService 		terceroGrupoService;
-	
-	@Autowired
-	private TerceroMarketLineService 	terceroMarketLineService;
-	
-	@Autowired
-	private TerceroTipoService 			terceroTipoService;
+	DecimalFormat 						format		= new DecimalFormat("#,###,###,##0.##");
 
 	@PostConstruct
 	public void iniciarControler() {
 		
-		dt_service 			= terceroService;
-		dt_paginaLista 		= "terceroLista";
-		dt_orden			= "";
-		dt_HQLfrom			= "Tercero t";
+		service 		= facturacionService;
+		paginaLista 	= "facturacionLista";
+		orden			= "";
 		
-		dt_columnas = new LinkedHashMap<String, DataTableColumn>();
-		
-		dt_columnas.put("id",  					new DataTableColumn("Id", 			Integer.class, "t.id"));		
-		dt_columnas.put("codigo", 				new DataTableColumn("Código", 		String.class,  "t.terc_codigo"));		
-		dt_columnas.put("razonSocial", 			new DataTableColumn("Razón Social",	String.class,  "t.terc_razonSocial"));		
-		dt_columnas.put("grupo", 				new DataTableColumn("Grupo", 		String.class,  "t.terceroGrupo.tegr_nombre"));		
-		dt_columnas.put("tipo", 				new DataTableColumn("Tipo", 		String.class,  "t.terceroTipo.teti_nombre"));		
-		dt_columnas.put("marketLine", 			new DataTableColumn("Market Line",	String.class,  "t.terceroMarketLine.teml_nombre"));		
-		dt_columnas.put("maf", 					new DataTableColumn("MAF", 			String.class,  "(CASE WHEN (t.terc_Maf = true) THEN 'SI' ELSE 'NO' END)" ));		
-		dt_columnas.put("noValido", 			new DataTableColumn("No vál.", 		String.class,  "(CASE WHEN (t.terc_noValido = true) THEN 'SI' ELSE 'NO' END)"));
-		
-		//No olvidar llamar a este método después de configurar las columnas.
-		iniciarControllerAbstract();
-		
+		encabezados = new HashMap<String, DataTableColumn>();
+		encabezados.put("periodo", 	new DataTableColumn("Periodo", "fact_periodo", paginaLista + "&orden=fact_periodo", ""));
+		encabezados.put("tercero", new DataTableColumn("Tercero", "tercero-terc_codigo", paginaLista + "&orden=tercero-terc_codigo", ""));
+		encabezados.put("agencia", new DataTableColumn("Agencia", "agencia-agen_codigo", paginaLista + "&orden=agencia-agen_codigo", ""));
+		encabezados.put("actividad", new DataTableColumn("Act.", "actividad-acti_codigo", paginaLista + "&orden=actividad-acti_codigo", ""));
+		encabezados.put("ventaAgencia",	new DataTableColumn("Venta Ag", "fact_ventaAgencia", paginaLista + "&orden=fact_ventaAgencia", ""));
+		encabezados.put("compraAgencia", new DataTableColumn("Compra Ag", "fact_compraAgencia", paginaLista + "&orden=fact_compraAgencia", ""));
+		encabezados.put("margen", new DataTableColumn("Margen", "margenAgencia", paginaLista + "&orden=margenAgencia", ""));
+		encabezados.put("ventaSap", new DataTableColumn("Venta SAP", "fact_ventaAgenciaSAP", paginaLista + "&orden=fact_ventaAgenciaSAP", ""));
+		encabezados.put("ventaGlobal", new DataTableColumn("Venta Gl", "fact_ventaGlobal", paginaLista + "&orden=fact_ventaGlobal", ""));
+		encabezados.put("compraGlobal", new DataTableColumn("Compra Gl", "fact_compraGlobal", paginaLista + "&orden=fact_compraGlobal", ""));
 	}
 	
-	@RequestMapping(value = "/terceroLista", method = RequestMethod.GET)
-	public String lista(Model model, @ModelAttribute("tercero") Tercero tercero) 
+	@RequestMapping(value = "/facturacionLista", method = RequestMethod.GET)
+	public String lista(Model model, @ModelAttribute("facturacion") Facturacion facturacion) 
 			throws 	NoSuchMethodException, SecurityException, IllegalAccessException, 
 					IllegalArgumentException, InvocationTargetException{
+						
+		filtrarLista();
+		model.addAttribute("textoBuscar", textoBusqueda);
+		model.addAttribute("paginaActual", paginaActual);
+		model.addAttribute("numeroPaginas", numeroPaginas);			
+		model.addAttribute("listaFacturacion", lista);
+		model.addAttribute("orden", orden);
+		model.addAttribute("numeroRegistros", format.format(totalRegistros));		
+		model.addAttribute("encabezados", encabezados);
 		
-		filtrarLista(); //Prepara la lista y la guarda en la variable dt_lista
-		
-		model.addAttribute("textoBuscar", 		dt_textoBusqueda);
-		model.addAttribute("paginaActual", 		dt_paginaActual);
-		model.addAttribute("numeroPaginas", 	dt_numeroPaginas);
-		model.addAttribute("listaTerceros", 	dt_lista);
-		model.addAttribute("columnas", 			dt_columnas);
-		model.addAttribute("orden", 			dt_orden);
-		model.addAttribute("numeroRegistros", 	dt_totalRegistros);		
-		
-		return "terceroLista";
+		return "facturacionLista";
 	}
 	
-	@RequestMapping(value = "/terceroListaMoverAPagina{param1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/facturacionListaMoverAPagina{param1}", method = RequestMethod.GET)
 	public String moverAPagina(@PathVariable(value = "param1") String param1){
 		switch (param1) {
 		case "Primera":
@@ -111,44 +90,42 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 			break;
 		}	
 		
-		return "redirect:/" + dt_paginaLista;
+		return "redirect:/" + paginaLista;
 	}
 	
-	@RequestMapping(value = "/terceroLista&orden={campoOrden}", method = RequestMethod.GET)
+	@RequestMapping(value = "/facturacionLista&orden={campoOrden}", method = RequestMethod.GET)
 	private String ordenar(@PathVariable("campoOrden") String campoOrden){
+		
 		super.ordenarLista(campoOrden);
 		
-		return "redirect:/" + dt_paginaLista;
+		return "redirect:/" + paginaLista;
 	}
 	
-	@RequestMapping(value = "/buscarTerceros", method = RequestMethod.POST)	
+	@RequestMapping(value = "/buscarFacturacion", method = RequestMethod.POST)	
 	public String buscar(Model model, @ModelAttribute("textoBuscar") String textoBuscar){
 		
 		super.buscar(textoBuscar);
 		
-		return "redirect:/" + dt_paginaLista;
+		return "redirect:/" + paginaLista;
 	}
 	
-	@RequestMapping(value = "/terceroForm", method = RequestMethod.GET)
-	public String mostrarFormulario(Model model, @RequestParam(value="idTercero",required=false) Integer idTercero) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	@RequestMapping(value = "/facturacionForm", method = RequestMethod.GET)
+	public String mostrarFormulario(Model model, @RequestParam(value="idFacturacion",required=false) Integer idFacturacion) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 				
-		Tercero tercero = new Tercero();
+		Facturacion facturacion = new Facturacion();
 		
-		if(idTercero!=null){
+		if(idFacturacion!=null){
 
-			tercero = terceroService.buscarId(idTercero);
+			facturacion = facturacionService.buscarId(idFacturacion);
 			
 		}
 		
-		model.addAttribute("tercero", tercero);	
-		model.addAttribute("listaTercerosGrupo", terceroGrupoService.listado());
-		model.addAttribute("listaTercerosMarketLine", terceroMarketLineService.listado());
-		model.addAttribute("listaTercerosTipo", terceroTipoService.listado());
+		model.addAttribute("facturacion", facturacion);	
 		
 		return "terceroForm";
 	}
 	
-	//Tanto para crear uno nuevo como para editar uno existente
+	/*
 	@RequestMapping(value = "/terceroForm", method = RequestMethod.POST, params="action=Aceptar")
 	public String aceptar(Model model,@ModelAttribute("tercero") @Valid Tercero tercero, BindingResult result) throws InvocationTargetException {
 		
@@ -212,31 +189,16 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		
 			
 	}
-	
-	@RequestMapping(value = "/terceroLista&id={idTercero}/eliminar", method = RequestMethod.POST)
-	@ResponseBody
-	public String eliminarDeLista(@PathVariable("idTercero") Integer idTercero){
 		
-		try{
-			Tercero tercero = terceroService.buscarId(idTercero);
-			terceroService.eliminar(tercero);	
-			return "ok";
-			
-		}catch(Exception e){			
-			return "error";	
-			
-		}		
-	}
-	
-	
 	@RequestMapping(value = "/tercerosExcel", method = RequestMethod.GET)
     public ModelAndView descargarExcel() {
+		
 		List <Tercero> listaExcel = new ArrayList<Tercero>();
 		
 		//Aplicar filtro
 		try {
-			for(Tercero terc : terceroService.listadoOrdenado(dt_orden)){
-				if(terc.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
+			for(Tercero terc : terceroService.listadoOrdenado(orden)){
+				if(terc.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
 					listaExcel.add(terc);
 				}
 			}
@@ -248,5 +210,5 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		
 		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);
     }
-	
+	*/
 }

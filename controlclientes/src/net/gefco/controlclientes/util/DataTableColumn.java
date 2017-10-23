@@ -11,17 +11,32 @@ public class DataTableColumn implements Serializable {
 	private String hrefOrden	= null;
 	private String classOrden	= null;
 	
+	private String 		beanCustomPropiedad			= null;
+	private Class<?> 	beanCustomClase				= null;
+	private String 		beanCustomProyeccion		= null;
+	
 	public DataTableColumn() {
 		super();
 	}
 
 	public DataTableColumn(String label, String campoHQL, String hrefOrden,
-			String classOrden) {
+			String classOrden, String beanCustomPropiedad,
+			Class<?> beanCustomClase, String beanCustomProyeccion) {
 		super();
 		this.label = label;
 		this.campoHQL = campoHQL;
 		this.hrefOrden = hrefOrden;
 		this.classOrden = classOrden;
+		this.beanCustomPropiedad = beanCustomPropiedad;
+		this.beanCustomClase = beanCustomClase;
+		this.beanCustomProyeccion = beanCustomProyeccion;
+	}
+	
+	public DataTableColumn(String label, Class<?> beanCustomClase, String beanCustomProyeccion) {
+		super();
+		this.label 					= label;		
+		this.beanCustomClase 		= beanCustomClase;
+		this.beanCustomProyeccion 	= beanCustomProyeccion;
 	}
 
 	public String getLabel() {
@@ -56,4 +71,29 @@ public class DataTableColumn implements Serializable {
 		this.classOrden = classOrden;
 	}
 
+	public String getBeanCustomPropiedad() {
+		return beanCustomPropiedad;
+	}
+
+	public void setBeanCustomPropiedad(String beanCustomPropiedad) {
+		this.beanCustomPropiedad = beanCustomPropiedad;
+	}
+	
+	public Class<?> getBeanCustomClase() {
+		return beanCustomClase;
+	}
+
+	public void setBeanCustomClase(Class<?> beanCustomClase) {
+		this.beanCustomClase = beanCustomClase;
+	}
+
+	public String getBeanCustomProyeccion() {
+		return beanCustomProyeccion;
+	}
+
+	public void setBeanCustomProyeccion(String beanCustomProyeccion) {
+		this.beanCustomProyeccion = beanCustomProyeccion;
+	}
+
+	
 }

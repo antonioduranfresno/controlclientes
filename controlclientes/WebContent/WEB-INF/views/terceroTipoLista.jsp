@@ -31,7 +31,7 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Tipos <small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Tipos de Tercero<small>(${numeroRegistros})</small>
                     
                     <a href="tercerosTipoExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
                     <a href="terceroTipoForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>

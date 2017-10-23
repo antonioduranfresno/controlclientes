@@ -67,4 +67,15 @@ public class ComercialTipo implements Serializable{
 		coti_codigo = "";
 		coti_nombre = "";
 	}
+	
+	@Override
+	public String toString() {
+		return "ComercialTipo [id=" + id + ", coti_codigo=" + coti_codigo
+				+ ", coti_nombre=" + coti_nombre + "]";
+	}
+
+	public String toStringCodigoNombre() {
+		return coti_codigo + " - " + coti_nombre;
+	}
+	
 }

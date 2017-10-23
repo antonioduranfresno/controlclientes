@@ -2,7 +2,7 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
-import net.gefco.controlclientes.modelo.Tercero;
+import net.gefco.controlclientes.modelo.Comercial;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public class TerceroDaoImpl implements TerceroDao{
+public class ComercialDaoImpl implements ComercialDao{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -25,35 +25,35 @@ public class TerceroDaoImpl implements TerceroDao{
 	}
 
 	@Override
-	public void guardar(Tercero tercero) {
-		getSession().save(tercero);	
+	public void guardar(Comercial comercial) {
+		getSession().save(comercial);	
 	}
 
 	@Override
-	public void actualizar(Tercero tercero) {
-		getSession().update(tercero);
+	public void actualizar(Comercial comercial) {
+		getSession().update(comercial);
 	}
 
 	@Override
-	public void eliminar(Tercero tercero) {
-		getSession().delete(tercero);
+	public void eliminar(Comercial comercial) {
+		getSession().delete(comercial);
 	}
 
 	@Override
-	public Tercero buscarId(Integer id) {
+	public Comercial buscarId(Integer id) {
 		
-		Criteria crit = getSession().createCriteria(Tercero.class);
+		Criteria crit = getSession().createCriteria(Comercial.class);
 		
 		crit.add(Restrictions.eq("id", id));
 		
-		return (Tercero) crit.uniqueResult();
+		return (Comercial) crit.uniqueResult();
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Tercero> listado() {		
+	public List<Comercial> listado() {		
 		
-		Query query = getSession().createQuery("from Tercero");
+		Query query = getSession().createQuery("from Comercial");
 				
 		return query.list();
 	}
@@ -108,5 +108,5 @@ public class TerceroDaoImpl implements TerceroDao{
 				
 		return query.list();
 	}
-	
+
 }

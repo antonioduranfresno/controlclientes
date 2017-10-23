@@ -2,11 +2,13 @@ package net.gefco.controlclientes.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Facturacion implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -255,5 +257,21 @@ public class Facturacion implements Serializable{
 		fact_ventaGlobal = 0.0;
 		fact_compraGlobal = 0.0;
 		fact_ventaGlobalSAP = 0.0;
+	}
+
+	@Override
+	public String toString() {
+		return "Facturacion [id=" + id + ", fact_periodo=" + fact_periodo
+				+ ", tercero=" + tercero + ", agencia=" + agencia
+				+ ", actividad=" + actividad + ", fact_ventaAgencia="
+				+ fact_ventaAgencia + ", fact_compraAgencia="
+				+ fact_compraAgencia + ", fact_ventaAgenciaSAP="
+				+ fact_ventaAgenciaSAP + ", fact_ajusteVentaAgencia="
+				+ fact_ajusteVentaAgencia + ", fact_ajusteCompraAgencia="
+				+ fact_ajusteCompraAgencia + ", fact_ajusteMotivo="
+				+ fact_ajusteMotivo + ", fact_ventaGlobal=" + fact_ventaGlobal
+				+ ", fact_compraGlobal=" + fact_compraGlobal
+				+ ", fact_ventaGlobalSAP=" + fact_ventaGlobalSAP + "]";
 	}	
+		
 }

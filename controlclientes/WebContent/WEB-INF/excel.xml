@@ -8,5 +8,6 @@
       <bean id="excelViewTercerosGrupo" class="net.gefco.controlclientes.excel.ExcelBuilderTercerosGrupo" />   
       <bean id="excelViewTercerosMarketLine" class="net.gefco.controlclientes.excel.ExcelBuilderTercerosMarketLine" />
       <bean id="excelViewTercerosTipo" 	class="net.gefco.controlclientes.excel.ExcelBuilderTercerosTipo" />
+      <bean id="excelViewComerciales" 	class="net.gefco.controlclientes.excel.ExcelBuilderComerciales" />
       
 </beans>

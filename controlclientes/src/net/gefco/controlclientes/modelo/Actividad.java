@@ -2,11 +2,13 @@ package net.gefco.controlclientes.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Actividad implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -73,11 +75,20 @@ public class Actividad implements Serializable{
 		grupo.copiarValores(dAux.grupo, true);;	
 	}
 	
-	
 	public void vaciar() {
 		id = 0;
 		acti_codigo = "";
 		acti_nombre = "";
 		grupo = new ActividadGrupo();
+	}
+
+	@Override
+	public String toString() {
+		return "Actividad [id=" + id + ", acti_codigo=" + acti_codigo
+				+ ", acti_nombre=" + acti_nombre + ", grupo=" + grupo + "]";
+	}
+	
+	public String toStringCodigoNombre() {
+		return acti_codigo + " - " + acti_nombre;
 	}
 }
