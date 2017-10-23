@@ -60,11 +60,11 @@ public class Agencia implements Serializable{
 		this.usuarios = usuarios;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -158,4 +158,16 @@ public class Agencia implements Serializable{
 		usuarios = new ArrayList<Usuario>();
 		comerciales = new ArrayList<Comercial>();
 	}
+
+	@Override
+	public String toString() {
+		return "Agencia [id=" + id + ", agen_codigo=" + agen_codigo
+				+ ", agen_nombre=" + agen_nombre + ", agenciaRegional="
+				+ agenciaRegional + ", uo=" + uo + "]";
+	}
+
+	public String toStringCodigoNombre() {
+		return agen_codigo + " - " + agen_nombre;
+	}
+	
 }

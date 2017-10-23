@@ -42,9 +42,8 @@ public abstract class AbstractService <T, Dao>{
 		return r;
 	}
 	
-	
 	public void guardar(T t) throws InvocationTargetException {	
-		ejecutarMetodo (dao, "guardar", new Object[] {t,"1"});			
+		ejecutarMetodo (dao, "guardar", new Object[] {t});			
 	}
 	
 	public void actualizar(T t) throws InvocationTargetException {	
@@ -68,6 +67,30 @@ public abstract class AbstractService <T, Dao>{
 	@SuppressWarnings("unchecked")
 	public List<T> listado() throws InvocationTargetException {
 		return (List<T>) ejecutarMetodo (dao, "listado", new Object[] {});
+			
+	}
+	
+	
+	public Long totalRegistros(String hql) throws InvocationTargetException {
+		return (Long) ejecutarMetodo (dao, "totalRegistros", new Object[] {hql});
+			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> listadoClaseCustom(String hql) throws InvocationTargetException {
+		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustom", new Object[] {hql});
+			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> listadoClaseCustomOrdenado(String hql, String campoOrden) throws InvocationTargetException {
+		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustomOrdenado", new Object[] {hql, campoOrden});
+			
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden) throws InvocationTargetException {
+		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustomPaginado", new Object[] {hql, primero, maximo, campoOrden});
 			
 	}
 	

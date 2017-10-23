@@ -12,8 +12,12 @@ public interface TerceroTipoDao {
 	
 	public void eliminar(TerceroTipo terceroTipo);
 
-	public TerceroTipo buscarTerceroTipo(Integer id);
+	public TerceroTipo buscarId(Integer id);
 	
-	public List<TerceroTipo> listarTercerosTipo();
+	public List<TerceroTipo> listado();
+
+	public List<TerceroTipo> listadoOrdenado(String campoOrden);
+	
+	public List<TerceroTipo> listadoPaginado(Integer primero, Integer maximo, String campoOrden);
 
 }

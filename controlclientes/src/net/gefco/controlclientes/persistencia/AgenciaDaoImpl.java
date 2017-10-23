@@ -2,7 +2,7 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
-import net.gefco.controlclientes.modelo.TerceroTipo;
+import net.gefco.controlclientes.modelo.Agencia;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public class TerceroTipoDaoImpl implements TerceroTipoDao{
+public class AgenciaDaoImpl implements AgenciaDao{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -25,47 +25,47 @@ public class TerceroTipoDaoImpl implements TerceroTipoDao{
 	}
 
 	@Override
-	public void guardar(TerceroTipo terceroTipo) {
-		getSession().save(terceroTipo);	
+	public void guardar(Agencia agencia) {
+		getSession().save(agencia);	
 	}
 
 	@Override
-	public void actualizar(TerceroTipo terceroTipo) {
-		getSession().update(terceroTipo);
+	public void actualizar(Agencia agencia) {
+		getSession().update(agencia);
 	}
 
 	@Override
-	public void eliminar(TerceroTipo terceroTipo) {
-		getSession().delete(terceroTipo);
+	public void eliminar(Agencia agencia) {
+		getSession().delete(agencia);
 	}
 
 	@Override
-	public TerceroTipo buscarId(Integer id) {
+	public Agencia buscarId(Integer id) {
 		
-		Criteria crit = getSession().createCriteria(TerceroTipo.class);
+		Criteria crit = getSession().createCriteria(Agencia.class);
 		
 		crit.add(Restrictions.eq("id", id));
 		
-		return (TerceroTipo) crit.uniqueResult();
+		return (Agencia) crit.uniqueResult();
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroTipo> listado() {		
+	public List<Agencia> listado() {		
 		
-		Query query = getSession().createQuery("from TerceroTipo");
+		Query query = getSession().createQuery("from Agencia");
 				
 		return query.list();
 	}
 		
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroTipo> listadoOrdenado(String campoOrden) {		
+	public List<Agencia> listadoOrdenado(String campoOrden) {		
 		
 		if (campoOrden.equals("")) {
 			return listado();
 		} else {
-			Query query = getSession().createQuery("from TerceroTipo order by "+campoOrden);
+			Query query = getSession().createQuery("from Agencia order by "+campoOrden);
 		
 			return query.list();
 		}
@@ -74,16 +74,16 @@ public class TerceroTipoDaoImpl implements TerceroTipoDao{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroTipo> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+	public List<Agencia> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
 		String orden = "";
 		if (campoOrden.equals("")) {
 			orden = "";
 		} else {
 			orden = " order by " + campoOrden;
 		}
-		Query query = getSession().createQuery("from TerceroTipo" + orden).setFirstResult(primero).setMaxResults(maximo);
+		Query query = getSession().createQuery("from Agencia" + orden).setFirstResult(primero).setMaxResults(maximo);
 				
 		return query.list();
 	}
-		
+	
 }

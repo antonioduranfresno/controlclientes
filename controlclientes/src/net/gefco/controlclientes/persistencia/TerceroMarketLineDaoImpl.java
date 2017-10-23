@@ -40,22 +40,50 @@ public class TerceroMarketLineDaoImpl implements TerceroMarketLineDao{
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<TerceroMarketLine> listarTercerosMarketLine() {		
-		
-		Query query = getSession().createQuery("from TerceroMarketLine");
-		
-		return query.list();
-	}
-	
-	@Override
-	public TerceroMarketLine buscarTerceroMarketLine(Integer id) {
+	public TerceroMarketLine buscarId(Integer id) {
 		
 		Criteria crit = getSession().createCriteria(TerceroMarketLine.class);
 		
 		crit.add(Restrictions.eq("id", id));
 		
 		return (TerceroMarketLine) crit.uniqueResult();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TerceroMarketLine> listado() {		
+		
+		Query query = getSession().createQuery("from TerceroMarketLine");
+				
+		return query.list();
+	}
+		
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TerceroMarketLine> listadoOrdenado(String campoOrden) {		
+		
+		if (campoOrden.equals("")) {
+			return listado();
+		} else {
+			Query query = getSession().createQuery("from TerceroMarketLine order by "+campoOrden);
+		
+			return query.list();
+		}
+		
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<TerceroMarketLine> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+		String orden = "";
+		if (campoOrden.equals("")) {
+			orden = "";
+		} else {
+			orden = " order by " + campoOrden;
+		}
+		Query query = getSession().createQuery("from TerceroMarketLine" + orden).setFirstResult(primero).setMaxResults(maximo);
+				
+		return query.list();
 	}
 
 }

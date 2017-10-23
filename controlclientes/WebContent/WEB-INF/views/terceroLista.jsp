@@ -2,6 +2,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix ="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html lang="es">
   <head>
     <meta charset="UTF-8">
@@ -31,7 +33,7 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Terceros <small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Terceros <small>(<fmt:formatNumber type = "number" pattern="#,##0" value = "${numeroRegistros}" />) </small>
                     
                     <a href="tercerosExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
                     <a href="terceroForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
@@ -73,38 +75,43 @@
 						
 				<thead>
 					<tr class="info">						
+						<th width="10%;">
+							<a href="${columnas['codigo'].hrefOrden}">${columnas['codigo'].label} 
+								<span class="${columnas['codigo'].classOrden}"></span>								
+							</a>
+						</th>
 						<th width="33%;">
-							<a href="${encabezados['tercero'].hrefOrden}">${encabezados['tercero'].label} 
-								<span class="${encabezados['tercero'].classOrden}"></span>								
+							<a href="${columnas['razonSocial'].hrefOrden}">${columnas['razonSocial'].label} 
+								<span class="${columnas['razonSocial'].classOrden}"></span>								
 							</a>
 						</th>
 						<th width="14%;">
-							<a href="${encabezados['grupo'].hrefOrden}">${encabezados['grupo'].label} 
-								<span class="${encabezados['grupo'].classOrden}"></span>								
+							<a href="${columnas['grupo'].hrefOrden}">${columnas['grupo'].label} 
+								<span class="${columnas['grupo'].classOrden}"></span>								
 							</a>
 						
 						</th>
 						<th width="14%;">
-							<a href="${encabezados['tipo'].hrefOrden}">${encabezados['tipo'].label} 
-								<span class="${encabezados['tipo'].classOrden}"></span>								
+							<a href="${columnas['tipo'].hrefOrden}">${columnas['tipo'].label} 
+								<span class="${columnas['tipo'].classOrden}"></span>								
 							</a>
 							
 						</th>
 						<th width="12%;">
-							<a href="${encabezados['marketLine'].hrefOrden}">${encabezados['marketLine'].label} 
-								<span class="${encabezados['marketLine'].classOrden}"></span>								
+							<a href="${columnas['marketLine'].hrefOrden}">${columnas['marketLine'].label} 
+								<span class="${columnas['marketLine'].classOrden}"></span>								
 							</a>
 							
 						</th>
 						<th width="7%;">
-							<a href="${encabezados['maf'].hrefOrden}">${encabezados['maf'].label} 
-								<span class="${encabezados['maf'].classOrden}"></span>								
+							<a href="${columnas['maf'].hrefOrden}">${columnas['maf'].label} 
+								<span class="${columnas['maf'].classOrden}"></span>								
 							</a>
 														
 						</th>
 						<th width="8%;">
-							<a href="${encabezados['noValido'].hrefOrden}">${encabezados['noValido'].label} 
-								<span class="${encabezados['noValido'].classOrden}"></span>								
+							<a href="${columnas['noValido'].hrefOrden}">${columnas['noValido'].label} 
+								<span class="${columnas['noValido'].classOrden}"></span>								
 							</a>
 						</th>
 						<th width="6%;"></th>
@@ -121,12 +128,13 @@
 				<c:forEach items="${listaTerceros}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.toStringCodigoTercero()}</td>
-						<td>${c.terceroGrupo.tegr_nombre}</td>
-						<td>${c.terceroTipo.teti_nombre}</td>
-						<td>${c.terceroMarketLine.teml_nombre}</td>
-						<td>${c.terc_Maf == true ? 'Sí' : 'No'}</td>
-						<td>${c.terc_noValido == true ? 'Sí' : 'No'}</td>
+						<td>${c.codigo}</td>
+						<td>${c.razonSocial}</td>						
+						<td>${c.grupo}</td>
+						<td>${c.tipo}</td>
+						<td>${c.marketLine}</td>
+						<td>${c.maf}</td>
+						<td>${c.noValido}</td>
 						<td style="text-align: center;"><a href="terceroForm?idTercero=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
 						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'tercero');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>

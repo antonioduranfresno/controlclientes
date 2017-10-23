@@ -4,6 +4,10 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-      <bean id="excelViewTerceros" class="net.gefco.controlclientes.excel.ExcelBuilderTerceros" />  
+      <bean id="excelViewTerceros" 		class="net.gefco.controlclientes.excel.ExcelBuilderTerceros" />  
       <bean id="excelViewTercerosGrupo" class="net.gefco.controlclientes.excel.ExcelBuilderTercerosGrupo" />   
+      <bean id="excelViewTercerosMarketLine" class="net.gefco.controlclientes.excel.ExcelBuilderTercerosMarketLine" />
+      <bean id="excelViewTercerosTipo" 	class="net.gefco.controlclientes.excel.ExcelBuilderTercerosTipo" />
+      <bean id="excelViewComerciales" 	class="net.gefco.controlclientes.excel.ExcelBuilderComerciales" />
+      
 </beans>

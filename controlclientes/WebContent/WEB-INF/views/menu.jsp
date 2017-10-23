@@ -29,7 +29,7 @@
                         </li>                    
                         
 						<li>
-                            <a href="rutaLista" ><i class="fa fa-money fa-fw"></i> FACTURACIÓN</a>
+                            <a href="facturacionLista" ><i class="fa fa-money fa-fw"></i> FACTURACIÓN</a>
                         </li>
                         <li>
                             <a href="rutaLista" ><i class="fa fa-folder-open-o fa-fw"></i> FICHEROS</a>
@@ -43,10 +43,19 @@
                             <ul class="nav nav-second-level collapse in">                               
                                 <li>
                                     <a href="terceroLista"><i class="fa fa-users fa-fw"></i> Terceros</a>
+                                </li>                                
+                                <li>
+                                    <a href="terceroGrupoLista"><i class="fa fa-object-group fa-fw"></i> Grupos </a>
                                 </li>
                                 <li>
-                                    <a href="terceroGrupoLista"><i class="fa fa-users fa-fw"></i> Grupos terceros</a>
+                                    <a href="terceroMarketLineLista"><i class="fa fa-industry fa-fw"></i> Market Lines</a>
                                 </li>
+                                <li>
+                                    <a href="terceroTipoLista"><i class="fa fa-cubes fa-fw"></i> Tipos</a>
+                                </li>
+                                <li>
+                                    <a href="comercialLista"><i class="fa fa-thumbs-up fa-fw"></i> Comerciales</a>
+                                </li>                                                                   
                             </ul>                          
                         </li>    
                                    	                        

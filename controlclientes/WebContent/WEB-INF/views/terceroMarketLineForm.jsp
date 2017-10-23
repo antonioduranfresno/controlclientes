@@ -30,19 +30,19 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header">Grupo</h2>
+                    <h2 class="page-header">Market Line</h2>
                 </div>                                
            </div> 
            
-           <sf:form method="post" modelAttribute="terceroGrupo" >
+           <sf:form method="post" modelAttribute="terceroMarketLine" >
 					
-				<sf:input type="hidden" path="id" value="${terceroGrupo.id}" />
+				<sf:input type="hidden" path="id" value="${terceroMarketLine.id}" />
 
 				<div class="row">
 					<div class="col-sm-8">
 						<label>Nombre</label>
-						<sf:errors path="tegr_nombre" class="label label-danger"></sf:errors>						
-		        		<sf:input class="form-control" path="tegr_nombre" value="${terceroGrupo.tegr_nombre}" maxlength="255" />
+						<sf:errors path="teml_nombre" class="label label-danger"></sf:errors>						
+		        		<sf:input class="form-control" path="teml_nombre" value="${terceroMarketLine.teml_nombre}" maxlength="255" />
 					</div>
 								
 				</div>
@@ -52,7 +52,7 @@
 				<div class="footer">      
 				
 					<div class="col-sm-10 derecha">			      		
-			    		<input type="button" class="btn btn-danger" value="Eliminar" onclick='eliminar($("#id").val(),"terceroGrupo");'>
+			    		<input type="button" class="btn btn-danger" value="Eliminar" onclick='eliminar($("#id").val(),"terceroMarketLine");'>
 			      	</div>      	
 				 	<div class="col-sm-2 derecha">			      		
 			      		<input type="submit" class="btn btn-primary" name="action" value="Aceptar" >

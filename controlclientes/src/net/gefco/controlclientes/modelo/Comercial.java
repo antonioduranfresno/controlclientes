@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 public class Comercial implements Serializable{
 	
@@ -17,8 +19,10 @@ public class Comercial implements Serializable{
 	@GeneratedValue
 	private Integer id 					= null;
 	
+	@NotEmpty
 	private String come_codigo			= null;
 	
+	@NotEmpty
 	private String come_nombre			= null;
 	
 	@ManyToOne
@@ -90,8 +94,6 @@ public class Comercial implements Serializable{
 		this.suiviEs = suiviEs;
 	}
 
-	
-
 	public void copiarValores(Comercial aux,boolean copiarId){
 		this.vaciar();
 		if (aux==null){return;}
@@ -111,4 +113,13 @@ public class Comercial implements Serializable{
 		comercialTipo		= new ComercialTipo();
 		suiviEs				= new SuiviEs();		
 	}
+
+	@Override
+	public String toString() {
+		return "Comercial [id=" + id + ", come_codigo=" + come_codigo
+				+ ", come_nombre=" + come_nombre + ", agencia=" + agencia
+				+ ", comercialTipo=" + comercialTipo + ", suiviEs=" + suiviEs
+				+ "]";
+	}
+	
 }

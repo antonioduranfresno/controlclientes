@@ -9,8 +9,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
-import net.gefco.controlclientes.modelo.TerceroGrupo;
-import net.gefco.controlclientes.negocio.TerceroGrupoService;
+import net.gefco.controlclientes.modelo.TerceroMarketLine;
+import net.gefco.controlclientes.negocio.TerceroMarketLineService;
 import net.gefco.controlclientes.util.AbstractDataTable;
 import net.gefco.controlclientes.util.DataTableColumn;
 
@@ -33,10 +33,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @Scope("session")
 @SessionAttributes("usuarioSesion")
-public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, TerceroGrupoService> {
+public class TerceroMarketLineController extends AbstractDataTable<TerceroMarketLine, TerceroMarketLineService> {
 	
 	@Autowired
-	private TerceroGrupoService 		terceroGrupoService;
+	private TerceroMarketLineService 		terceroMarketLineService;
 	
 	
 	DecimalFormat 						format		= new DecimalFormat("#,###,###,##0.##");
@@ -44,17 +44,17 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 	@PostConstruct
 	public void iniciarControler() {
 		
-		service 		= terceroGrupoService;
-		paginaLista 	= "terceroGrupoLista";
+		service 		= terceroMarketLineService;
+		paginaLista 	= "terceroMarketLineLista";
 		orden			= "";
 		
 		encabezados = new HashMap<String, DataTableColumn>();
-		encabezados.put("nombre", new DataTableColumn("Nombre",	"tegr_nombre", paginaLista + "&orden=tegr_nombre", ""));
+		encabezados.put("nombre", new DataTableColumn("Nombre",	"teml_nombre", paginaLista + "&orden=teml_nombre", ""));
 	}
 	
 	
-	@RequestMapping(value = "/terceroGrupoLista", method = RequestMethod.GET)
-	public String lista(Model model, @ModelAttribute("terceroGrupo") TerceroGrupo terceroGrupo) 
+	@RequestMapping(value = "/terceroMarketLineLista", method = RequestMethod.GET)
+	public String lista(Model model, @ModelAttribute("terceroMarketLine") TerceroMarketLine terceroMarketLine) 
 			throws 	NoSuchMethodException, SecurityException, IllegalAccessException, 
 					IllegalArgumentException, InvocationTargetException{
 						
@@ -68,10 +68,10 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 		
 		model.addAttribute("encabezados", encabezados);
 		
-		return "terceroGrupoLista";
+		return "terceroMarketLineLista";
 	}
 	
-	@RequestMapping(value = "/terceroGrupoListaMoverAPagina{param1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/terceroMarketLineListaMoverAPagina{param1}", method = RequestMethod.GET)
 	public String moverAPagina(@PathVariable(value = "param1") String param1){
 		switch (param1) {
 		case "Primera":
@@ -94,14 +94,14 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 		return "redirect:/" + paginaLista;
 	}
 	
-	@RequestMapping(value = "/terceroGrupoLista&orden={campoOrden}", method = RequestMethod.GET)
+	@RequestMapping(value = "/terceroMarketLineLista&orden={campoOrden}", method = RequestMethod.GET)
 	private String ordenar(@PathVariable("campoOrden") String campoOrden){
 		super.ordenarLista(campoOrden);
 		
 		return "redirect:/" + paginaLista;
 	}
 	
-	@RequestMapping(value = "/buscarTercerosGrupo", method = RequestMethod.POST)	
+	@RequestMapping(value = "/buscarTercerosMarketLine", method = RequestMethod.POST)	
 	public String buscar(Model model, @ModelAttribute("textoBuscar") String textoBuscar){
 		
 		super.buscar(textoBuscar);
@@ -109,55 +109,55 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 		return "redirect:/" + paginaLista;
 	}
 	
-	@RequestMapping(value = "/terceroGrupoForm", method = RequestMethod.GET)
-	public String mostrarFormulario(Model model, @RequestParam(value="idTerceroGrupo",required=false) Integer idTerceroGrupo) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	@RequestMapping(value = "/terceroMarketLineForm", method = RequestMethod.GET)
+	public String mostrarFormulario(Model model, @RequestParam(value="idTerceroMarketLine",required=false) Integer idTerceroMarketLine) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 				
-		TerceroGrupo terceroGrupo = new TerceroGrupo();
+		TerceroMarketLine terceroMarketLine = new TerceroMarketLine();
 		
-		if(idTerceroGrupo != null){
+		if(idTerceroMarketLine != null){
 
-			terceroGrupo = terceroGrupoService.buscarId(idTerceroGrupo);
+			terceroMarketLine = terceroMarketLineService.buscarId(idTerceroMarketLine);
 			
 		}
 		
-		model.addAttribute("terceroGrupo", terceroGrupo);	
+		model.addAttribute("terceroMarketLine", terceroMarketLine);	
 				
-		return "terceroGrupoForm";
+		return "terceroMarketLineForm";
 	}
 	
 	//Tanto para crear uno nuevo como para editar uno existente
-	@RequestMapping(value = "/terceroGrupoForm", method = RequestMethod.POST, params="action=Aceptar")
-	public String aceptar(Model model,@ModelAttribute("terceroGrupo") @Valid TerceroGrupo terceroGrupo, BindingResult result){
+	@RequestMapping(value = "/terceroMarketLineForm", method = RequestMethod.POST, params="action=Aceptar")
+	public String aceptar(Model model,@ModelAttribute("terceroMarketLine") @Valid TerceroMarketLine terceroMarketLine, BindingResult result){
 		
 		if(result.hasErrors()){			
-			return "terceroGrupoForm";			
+			return "terceroMarketLineForm";			
 		}
 
 		try{
 				
 			//Creación
-			if(terceroGrupo.getId()==null || terceroGrupo.getId()==0){
+			if(terceroMarketLine.getId()==null || terceroMarketLine.getId()==0){
 			
-				terceroGrupo.setId(0);	
-				terceroGrupoService.guardar(terceroGrupo);				
-				terceroGrupo = new TerceroGrupo();
+				terceroMarketLine.setId(0);	
+				terceroMarketLineService.guardar(terceroMarketLine);				
+				terceroMarketLine = new TerceroMarketLine();
                 
 			//Actualización	
 			}else{				
-				terceroGrupoService.actualizar(terceroGrupo);				
+				terceroMarketLineService.actualizar(terceroMarketLine);				
 			}
             
-			return "redirect:/terceroGrupoLista?success=true";
+			return "redirect:/terceroMarketLineLista?success=true";
 							                
          } catch (Exception e) {
         	 
                 FieldError error;
                                 
                 if (e.getClass().equals(DataIntegrityViolationException.class)){
-                	error = new FieldError("terceroGrupo", "tegr_nombre", "El nombre del grupo ya existente.");
+                	error = new FieldError("terceroMarketLine", "teml_nombre", "El nombre del grupo ya existente.");
                 
                 }else{
-                	error = new FieldError("terceroGrupo", "tegr_nombre", "error no controlado: " + e.getMessage());
+                	error = new FieldError("terceroMarketLine", "teml_nombre", "error no controlado: " + e.getMessage());
                 }
                 
                 result.addError(error);     
@@ -168,14 +168,14 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 			
 	}
 	
-	@RequestMapping(value = "/terceroGrupoLista&id={idTerceroGrupo}/eliminar", method = RequestMethod.POST)
+	@RequestMapping(value = "/terceroMarketLineLista&id={idTerceroMarketLine}/eliminar", method = RequestMethod.POST)
 	@ResponseBody
-	public String eliminarDeLista(@PathVariable("idTerceroGrupo") Integer idTerceroGrupo) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public String eliminarDeLista(@PathVariable("idTerceroMarketLine") Integer idTerceroMarketLine) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		
-		TerceroGrupo terceroGrupo = terceroGrupoService.buscarId(idTerceroGrupo);
+		TerceroMarketLine terceroMarketLine = terceroMarketLineService.buscarId(idTerceroMarketLine);
 		
 		try{
-			terceroGrupoService.eliminar(terceroGrupo);	
+			terceroMarketLineService.eliminar(terceroMarketLine);	
 			return "ok";			
 		}catch(Exception e){			
 			return "error";			
@@ -183,18 +183,18 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 	}
 	
 	
-	@RequestMapping(value = "/tercerosGrupoExcel", method = RequestMethod.GET)
+	@RequestMapping(value = "/tercerosMarketLineExcel", method = RequestMethod.GET)
     public ModelAndView descargarExcel() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		List <TerceroGrupo> listaExcel = new ArrayList<TerceroGrupo>();
+		List <TerceroMarketLine> listaExcel = new ArrayList<TerceroMarketLine>();
 		
 		//Aplicar filtro
-		for(TerceroGrupo tg : terceroGrupoService.listadoOrdenado(orden)){
+		for(TerceroMarketLine tg : terceroMarketLineService.listadoOrdenado(orden)){
 			if(tg.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
 				listaExcel.add(tg);
 			}
 		}
 		
-		return new ModelAndView("excelViewTercerosGrupo", "tercerosGrupoExcel", listaExcel);
+		return new ModelAndView("excelViewTercerosMarketLine", "tercerosMarketLineExcel", listaExcel);
     }
 	
 }

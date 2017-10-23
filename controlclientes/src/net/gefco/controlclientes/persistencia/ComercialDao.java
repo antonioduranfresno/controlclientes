@@ -2,20 +2,20 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
-import net.gefco.controlclientes.modelo.Tercero;
+import net.gefco.controlclientes.modelo.Comercial;
 
-public interface TerceroDao {
+public interface ComercialDao {
 
-	public void 			guardar(Tercero tercero);
+	public void 			guardar(Comercial comercial);
 	
-	public void 			actualizar(Tercero tercero);
+	public void 			actualizar(Comercial comercial);
 	
-	public void 			eliminar(Tercero tercero);
+	public void 			eliminar(Comercial comercial);
 
-	public Tercero 			buscarId(Integer id);
+	public Comercial 		buscarId(Integer id);
 	
-	public List<Tercero> 	listado();
-	
+	public List<Comercial> 	listado();
+
 	public Long 			totalRegistros (String hql);
 	
 	public List<Object[]>	listadoClaseCustom(String hql);
@@ -23,5 +23,6 @@ public interface TerceroDao {
 	public List<Object[]>	listadoClaseCustomOrdenado(String hql, String campoOrden);
 	
 	public List<Object[]>	listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden);
+
 
 }

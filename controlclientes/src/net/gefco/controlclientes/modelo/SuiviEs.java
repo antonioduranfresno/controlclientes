@@ -54,4 +54,10 @@ public class SuiviEs implements Serializable{
 		id = 0;
 		sues_nombre = "";
 	}
+
+	@Override
+	public String toString() {
+		return "SuiviEs [id=" + id + ", sues_nombre=" + sues_nombre + "]";
+	}
+	
 }

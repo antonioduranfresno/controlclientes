@@ -2,7 +2,7 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
-import net.gefco.controlclientes.modelo.TerceroTipo;
+import net.gefco.controlclientes.modelo.Facturacion;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public class TerceroTipoDaoImpl implements TerceroTipoDao{
+public class FacturacionDaoImpl implements FacturacionDao{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -25,47 +25,47 @@ public class TerceroTipoDaoImpl implements TerceroTipoDao{
 	}
 
 	@Override
-	public void guardar(TerceroTipo terceroTipo) {
-		getSession().save(terceroTipo);	
+	public void guardar(Facturacion tercero) {
+		getSession().save(tercero);	
 	}
 
 	@Override
-	public void actualizar(TerceroTipo terceroTipo) {
-		getSession().update(terceroTipo);
+	public void actualizar(Facturacion tercero) {
+		getSession().update(tercero);
 	}
 
 	@Override
-	public void eliminar(TerceroTipo terceroTipo) {
-		getSession().delete(terceroTipo);
+	public void eliminar(Facturacion tercero) {
+		getSession().delete(tercero);
 	}
 
 	@Override
-	public TerceroTipo buscarId(Integer id) {
+	public Facturacion buscarId(Integer id) {
 		
-		Criteria crit = getSession().createCriteria(TerceroTipo.class);
+		Criteria crit = getSession().createCriteria(Facturacion.class);
 		
 		crit.add(Restrictions.eq("id", id));
 		
-		return (TerceroTipo) crit.uniqueResult();
+		return (Facturacion) crit.uniqueResult();
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroTipo> listado() {		
+	public List<Facturacion> listado() {		
 		
-		Query query = getSession().createQuery("from TerceroTipo");
+		Query query = getSession().createQuery("from Facturacion");
 				
 		return query.list();
 	}
 		
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroTipo> listadoOrdenado(String campoOrden) {		
+	public List<Facturacion> listadoOrdenado(String campoOrden) {		
 		
 		if (campoOrden.equals("")) {
 			return listado();
 		} else {
-			Query query = getSession().createQuery("from TerceroTipo order by "+campoOrden);
+			Query query = getSession().createQuery("from Facturacion order by "+campoOrden);
 		
 			return query.list();
 		}
@@ -74,16 +74,16 @@ public class TerceroTipoDaoImpl implements TerceroTipoDao{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<TerceroTipo> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+	public List<Facturacion> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
 		String orden = "";
 		if (campoOrden.equals("")) {
 			orden = "";
 		} else {
 			orden = " order by " + campoOrden;
 		}
-		Query query = getSession().createQuery("from TerceroTipo" + orden).setFirstResult(primero).setMaxResults(maximo);
+		Query query = getSession().createQuery("from Facturacion" + orden).setFirstResult(primero).setMaxResults(maximo);
 				
 		return query.list();
 	}
-		
+	
 }
