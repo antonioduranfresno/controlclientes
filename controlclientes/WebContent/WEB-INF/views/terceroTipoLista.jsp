@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix ="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html lang="es">
   <head>
     <meta charset="UTF-8">
@@ -31,7 +32,7 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Tipos de Tercero<small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Tipos de Tercero <small>(<fmt:formatNumber type = "number" pattern="#,##0" value = "${numeroRegistros}" />) </small>
                     
                     <a href="tercerosTipoExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
                     <a href="terceroTipoForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
@@ -74,8 +75,8 @@
 				<thead>
 					<tr class="info">						
 						<th width="50%;">
-							<a href="${encabezados['nombre'].hrefOrden}">${encabezados['nombre'].label} 
-								<span class="${encabezados['nombre'].classOrden}"></span>								
+							<a href="${columnas['nombre'].hrefOrden}">${columnas['nombre'].label} 
+								<span class="${columnas['nombre'].classOrden}"></span>								
 							</a>
 						</th>
 						
@@ -90,10 +91,10 @@
 				    </c:when>
 				</c:choose>	
 							
-				<c:forEach items="${lista}" var="c" varStatus="index">
+				<c:forEach items="${listaTercerosTipo}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.teti_nombre}</td>
+						<td>${c.nombre}</td>
 						<td style="text-align: center;"><a href="terceroTipoForm?idTerceroTipo=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
 						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'terceroTipo');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>

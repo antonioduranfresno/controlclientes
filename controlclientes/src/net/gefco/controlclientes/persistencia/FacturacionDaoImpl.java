@@ -59,29 +59,52 @@ public class FacturacionDaoImpl implements FacturacionDao{
 	}
 		
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<Facturacion> listadoOrdenado(String campoOrden) {		
-		
-		if (campoOrden.equals("")) {
-			return listado();
-		} else {
-			Query query = getSession().createQuery("from Facturacion order by "+campoOrden);
-		
-			return query.list();
-		}
+	public Long totalRegistros (String hql){
+		int posicionFrom = hql.indexOf(" from ");
+		String hql2 = "select count(*)" + hql.substring(posicionFrom);
+		return (Long) getSession().createQuery(hql2).uniqueResult();
 		
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Facturacion> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+	public List<Object[]> listadoClaseCustom(String hql){
+		
+		Query query = getSession().createQuery(hql);
+		
+		return query.list();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Object[]> listadoClaseCustomOrdenado(String hql, String campoOrden){
 		String orden = "";
 		if (campoOrden.equals("")) {
 			orden = "";
+			
 		} else {
 			orden = " order by " + campoOrden;
+			
 		}
-		Query query = getSession().createQuery("from Facturacion" + orden).setFirstResult(primero).setMaxResults(maximo);
+		
+		Query query = getSession().createQuery(hql + orden);
+		
+		return query.list();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Object[]> listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden) {
+		String orden = "";
+		if (campoOrden.equals("")) {
+			orden = "";
+			
+		} else {
+			orden = " order by " + campoOrden;
+			
+		}
+		
+		Query query = getSession().createQuery(hql + orden).setFirstResult(primero).setMaxResults(maximo);
 				
 		return query.list();
 	}

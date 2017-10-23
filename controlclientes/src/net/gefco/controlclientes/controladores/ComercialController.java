@@ -1,7 +1,6 @@
 package net.gefco.controlclientes.controladores;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,8 +47,6 @@ public class ComercialController extends AbstractDataTable<Comercial, ComercialS
 	
 	@Autowired
 	private SuiviEsService			suiviEsService;
-	
-	DecimalFormat 						format		= new DecimalFormat("#,###,###,##0.##");
 
 	@PostConstruct
 	public void iniciarControler() {
@@ -67,6 +64,9 @@ public class ComercialController extends AbstractDataTable<Comercial, ComercialS
 		dt_columnas.put("tipo", 				new DataTableColumn("Tipo",			String.class, 	"c.comercialTipo.coti_codigo"));
 		dt_columnas.put("suiviEs", 				new DataTableColumn("Suivi", 		String.class,   "c.suiviEs.sues_nombre"));
 		
+		//No olvidar llamar a este método después de configurar las columnas.
+		iniciarControllerAbstract();
+		
 	}
 	
 	@RequestMapping(value = "/comercialLista", method = RequestMethod.GET)
@@ -79,7 +79,7 @@ public class ComercialController extends AbstractDataTable<Comercial, ComercialS
 		model.addAttribute("textoBuscar", 		dt_textoBusqueda);
 		model.addAttribute("paginaActual", 		dt_paginaActual);
 		model.addAttribute("numeroPaginas", 	dt_numeroPaginas);
-		model.addAttribute("listaTerceros", 	dt_lista);
+		model.addAttribute("listaComerciales", 	dt_lista);
 		model.addAttribute("columnas", 			dt_columnas);
 		model.addAttribute("orden", 			dt_orden);
 		model.addAttribute("numeroRegistros", 	dt_totalRegistros);		

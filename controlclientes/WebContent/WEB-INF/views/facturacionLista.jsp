@@ -32,7 +32,7 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Facturación <small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Facturación <small>(<fmt:formatNumber type = "number" pattern="#,##0" value = "${numeroRegistros}" />) </small>
                     
                     <a href="facturacionExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
                     <a href="facturacionForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
@@ -75,43 +75,43 @@
 				<thead>
 					<tr class="info">						
 						<th width="8%;">
-							<a href="${encabezados['periodo'].hrefOrden}">${encabezados['periodo'].label} 
-								<span class="${encabezados['periodo'].classOrden}"></span>								
+							<a href="${columnas['periodo'].hrefOrden}">${columnas['periodo'].label} 
+								<span class="${columnas['periodo'].classOrden}"></span>								
 							</a>
 						</th>
 						<th width="22%;">
-							<a href="${encabezados['tercero'].hrefOrden}">${encabezados['tercero'].label} 
-								<span class="${encabezados['tercero'].classOrden}"></span>								
+							<a href="${columnas['tercero'].hrefOrden}">${columnas['tercero'].label} 
+								<span class="${columnas['tercero'].classOrden}"></span>								
 							</a>						
 						</th>
 						<th width="9%;">
-							<a href="${encabezados['agencia'].hrefOrden}">${encabezados['agencia'].label} 
-								<span class="${encabezados['agencia'].classOrden}"></span>								
+							<a href="${columnas['agencia'].hrefOrden}">${columnas['agencia'].label} 
+								<span class="${columnas['agencia'].classOrden}"></span>								
 							</a>							
 						</th>
 						<th width="7%;">
-							<a href="${encabezados['actividad'].hrefOrden}">${encabezados['actividad'].label} 
-								<span class="${encabezados['actividad'].classOrden}"></span>								
+							<a href="${columnas['actividad'].hrefOrden}">${columnas['actividad'].label} 
+								<span class="${columnas['actividad'].classOrden}"></span>								
 							</a>							
 						</th>
 						<th width="13%;">
-							<a href="${encabezados['ventaAgencia'].hrefOrden}">${encabezados['ventaAgencia'].label} 
-								<span class="${encabezados['ventaAgencia'].classOrden}"></span>								
+							<a href="${columnas['ventaAgencia'].hrefOrden}">${columnas['ventaAgencia'].label} 
+								<span class="${columnas['ventaAgencia'].classOrden}"></span>								
 							</a>														
 						</th>
 						<th width="13%;">
-							<a href="${encabezados['compraAgencia'].hrefOrden}">${encabezados['compraAgencia'].label} 
-								<span class="${encabezados['compraAgencia'].classOrden}"></span>								
+							<a href="${columnas['compraAgencia'].hrefOrden}">${columnas['compraAgencia'].label} 
+								<span class="${columnas['compraAgencia'].classOrden}"></span>								
 							</a>
 						</th>
 						<th width="10%;">
-							<a href="${encabezados['margen'].hrefOrden}">${encabezados['margen'].label} 
-								<span class="${encabezados['margen'].classOrden}"></span>								
+							<a href="${columnas['margen'].hrefOrden}">${columnas['margen'].label} 
+								<span class="${columnas['margen'].classOrden}"></span>								
 							</a>
 						</th>
 						<th width="13%;">
-							<a href="${encabezados['ventaSap'].hrefOrden}">${encabezados['ventaSap'].label} 
-								<span class="${encabezados['ventaSap'].classOrden}"></span>								
+							<a href="${columnas['ventaSap'].hrefOrden}">${columnas['ventaSap'].label} 
+								<span class="${columnas['ventaSap'].classOrden}"></span>								
 							</a>
 						</th>					
 						<th width="6%;"></th>						
@@ -127,14 +127,14 @@
 				<c:forEach items="${listaFacturacion}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.fact_periodo}</td>
-						<td class="fuente_minima">${c.tercero.toStringCodigoTercero()}</td>
-						<td>${c.agencia.agen_codigo}</td>
-						<td>${c.actividad.acti_codigo}</td>
-						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.fact_ventaAgencia}" /></td>
-						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.fact_compraAgencia}" /></td>						
-						<td class="text-right"><fmt:formatNumber type = "percent" maxIntegerDigits="2" maxFractionDigits = "2" value = "${c.getMargenAgencia()}" /></td>
-						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.fact_ventaAgenciaSAP}" /></td>						
+						<td>${c.periodo}</td>
+						<td class="fuente_minima">${c.tercero}</td>
+						<td>${c.agencia}</td>
+						<td>${c.actividad}</td>
+						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.ventaAgencia}" /></td>
+						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.compraAgencia}" /></td>						
+						<td class="text-right"><fmt:formatNumber type = "percent" maxIntegerDigits="2" maxFractionDigits = "2" value = "" /></td>
+						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.margen}" /></td>						
 						<td style="text-align: center;"><a href="facturacionForm?idFacturacion=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
 					</tr>
 			
