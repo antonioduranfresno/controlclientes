@@ -16,8 +16,13 @@ public interface TerceroGrupoDao {
 	
 	public List<TerceroGrupo> listado();
 
-	public List<TerceroGrupo> listadoOrdenado(String campoOrden);
+	public Long 			totalRegistros (String hql);
 	
-	public List<TerceroGrupo> listadoPaginado(Integer primero, Integer maximo, String campoOrden);
+	public List<Object[]>	listadoClaseCustom(String hql);
+	
+	public List<Object[]>	listadoClaseCustomOrdenado(String hql, String campoOrden);
+	
+	public List<Object[]>	listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden);
+
 	
 }

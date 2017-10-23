@@ -16,8 +16,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.servlet.view.document.AbstractXlsView;
+import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
-public class ExcelBuilderTerceros extends AbstractXlsView {
+public class ExcelBuilderTerceros extends AbstractXlsxView {
 
     @Override
     protected void buildExcelDocument(Map<String, Object> model,
@@ -30,7 +31,7 @@ public class ExcelBuilderTerceros extends AbstractXlsView {
     	cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd/MM/yyyy"));
     	    	
         //Creación del nombre del fichero
-        response.setHeader("Content-Disposition", "attachment; filename=\"Terceros.xls\""); //Ojo, quiero xlsx
+        response.setHeader("Content-Disposition", "attachment; filename=\"Terceros.xlsx\""); //Ojo, quiero xlsx
         
         @SuppressWarnings("unchecked")
         List<Tercero> terceros = (List<Tercero>) model.get("tercerosExcel");

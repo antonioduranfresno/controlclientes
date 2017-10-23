@@ -31,7 +31,7 @@
         
             <div class="row">
                 <div class="col-sm-12">
-                    <h2 class="page-header derecha">Grupos de Tercero<small>(${numeroRegistros})</small>
+                    <h2 class="page-header derecha">Grupos de Tercero <small>(<fmt:formatNumber type = "number" pattern="#,##0" value = "${numeroRegistros}" />) </small>
                     
                     <a href="tercerosGrupoExcel" class="btn btn-success"><span class="glyphicon glyphicon-file"></span> Excel</a>
                     <a href="terceroGrupoForm" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Nuevo</a>
@@ -74,8 +74,8 @@
 				<thead>
 					<tr class="info">						
 						<th width="50%;">
-							<a href="${encabezados['nombre'].hrefOrden}">${encabezados['nombre'].label} 
-								<span class="${encabezados['nombre'].classOrden}"></span>								
+							<a href="${columnas['nombre'].hrefOrden}">${columnas['nombre'].label} 
+								<span class="${columnas['nombre'].classOrden}"></span>								
 							</a>
 						</th>
 						
@@ -90,10 +90,10 @@
 				    </c:when>
 				</c:choose>	
 							
-				<c:forEach items="${lista}" var="c" varStatus="index">
+				<c:forEach items="${listaTercerosGrupo}" var="c" varStatus="index">
 			
 					<tr>
-						<td>${c.tegr_nombre}</td>
+						<td>${c.nombre}</td>
 						<td style="text-align: center;"><a href="terceroGrupoForm?idTerceroGrupo=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
 						<td style="text-align: center;"><a href="#" onclick="eliminar(${c.id},'terceroGrupo');" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></a></td>
 					</tr>

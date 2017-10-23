@@ -16,8 +16,13 @@ public interface TerceroMarketLineDao {
 	
 	public List<TerceroMarketLine> 	listado();
 
-	public List<TerceroMarketLine> 	listadoOrdenado(String campoOrden);
+	public Long 			totalRegistros (String hql);
 	
-	public List<TerceroMarketLine> 	listadoPaginado(Integer primero, Integer maximo, String campoOrden);
+	public List<Object[]>	listadoClaseCustom(String hql);
+	
+	public List<Object[]>	listadoClaseCustomOrdenado(String hql, String campoOrden);
+	
+	public List<Object[]>	listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden);
+
 
 }

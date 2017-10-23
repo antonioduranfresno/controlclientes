@@ -102,7 +102,7 @@ public abstract class AbstractDataTable<T, Service> {
 			
 		}
 		
-	    beanClassCustom = CfgUtil.createBeanClass("net.gefco.controlclientes.ClaseCustom", beanCustomProperties);
+	    beanClassCustom = CfgUtil.createBeanClass("net.gefco.controlclientes." + dt_paginaLista, beanCustomProperties);
 	    
 	    hql = hql + " from " + dt_HQLfrom;
 	    

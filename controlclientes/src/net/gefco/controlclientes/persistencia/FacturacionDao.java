@@ -16,8 +16,12 @@ public interface FacturacionDao {
 	
 	public List<Facturacion> 	listado();
 
-	public List<Facturacion> 	listadoOrdenado(String campoOrden);
+	public Long 				totalRegistros (String hql);
 	
-	public List<Facturacion> 	listadoPaginado(Integer primero, Integer maximo, String campoOrden);
+	public List<Object[]>		listadoClaseCustom(String hql);
+	
+	public List<Object[]>		listadoClaseCustomOrdenado(String hql, String campoOrden);
+	
+	public List<Object[]>		listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden);
 
 }
