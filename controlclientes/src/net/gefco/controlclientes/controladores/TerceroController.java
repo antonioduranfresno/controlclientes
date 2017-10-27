@@ -1,11 +1,13 @@
 package net.gefco.controlclientes.controladores;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import net.gefco.controlclientes.modelo.Tercero;
@@ -16,6 +18,7 @@ import net.gefco.controlclientes.negocio.TerceroTipoService;
 import net.gefco.controlclientes.util.AbstractDataTable;
 import net.gefco.controlclientes.util.DataTableColumn;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -29,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope("session")
@@ -67,7 +69,7 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		dt_columnas.put("marketLine", 			new DataTableColumn("Market Line",	String.class,  "t.terceroMarketLine.teml_nombre"));		
 		dt_columnas.put("maf", 					new DataTableColumn("MAF", 			String.class,  "(CASE WHEN (t.terc_Maf = true) THEN 'SI' ELSE 'NO' END)" ));		
 		dt_columnas.put("noValido", 			new DataTableColumn("No vál.", 		String.class,  "(CASE WHEN (t.terc_noValido = true) THEN 'SI' ELSE 'NO' END)"));
-		
+				
 		//No olvidar llamar a este método después de configurar las columnas.
 		iniciarControllerAbstract();
 		
@@ -229,24 +231,35 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 	}
 	
 	
+//	@RequestMapping(value = "/tercerosExcel", method = RequestMethod.GET)
+//    public ModelAndView descargarExcel(HttpServletResponse response) throws InvocationTargetException {
+//		List <Tercero> listaExcel = new ArrayList<Tercero>();
+//		
+//		//Aplicar filtro
+//		try {
+//			for(Tercero terc : terceroService.listado()){
+//				if(terc.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
+//					listaExcel.add(terc);
+//				}
+//			}
+//			
+//		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//		
+//		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);
+//
+//    }
+	
+	
 	@RequestMapping(value = "/tercerosExcel", method = RequestMethod.GET)
-    public ModelAndView descargarExcel() {
-		List <Tercero> listaExcel = new ArrayList<Tercero>();
+	@ResponseBody
+	public void downloadExcel(HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IOException, InvalidFormatException, IllegalAccessException, IllegalArgumentException, NoSuchMethodException, SecurityException {
 		
-		//Aplicar filtro
-		try {
-			for(Tercero terc : terceroService.listadoOrdenado(dt_orden)){
-				if(terc.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
-					listaExcel.add(terc);
-				}
-			}
-			
-		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);
-    }
+        String columnasAMostrar = "codigo; razonSocial; grupo; tipo; marketLine; maf; noValido";
+        super.descargarExcel(request, response, "terceros.XLSX", "terceros", columnasAMostrar);
+        
+	}
 	
 }
