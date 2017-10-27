@@ -1,15 +1,19 @@
 package net.gefco.controlclientes.controladores;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashMap;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.gefco.controlclientes.modelo.Facturacion;
 import net.gefco.controlclientes.negocio.FacturacionService;
 import net.gefco.controlclientes.util.AbstractDataTable;
 import net.gefco.controlclientes.util.DataTableColumn;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
@@ -190,26 +195,36 @@ public class FacturacionController extends AbstractDataTable<Facturacion, Factur
 		
 			
 	}
-		
-	@RequestMapping(value = "/tercerosExcel", method = RequestMethod.GET)
-    public ModelAndView descargarExcel() {
-		
-		List <Tercero> listaExcel = new ArrayList<Tercero>();
-		
-		//Aplicar filtro
-		try {
-			for(Tercero terc : terceroService.listadoOrdenado(orden)){
-				if(terc.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
-					listaExcel.add(terc);
-				}
-			}
-			
-		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);
-    }
 	*/
+	
+//	@RequestMapping(value = "/tercerosExcel", method = RequestMethod.GET)
+//    public ModelAndView descargarExcel() {
+//		
+//		List <Tercero> listaExcel = new ArrayList<Tercero>();
+//		
+//		//Aplicar filtro
+//		try {
+//			for(Tercero terc : terceroService.listadoOrdenado(orden)){
+//				if(terc.toString().toUpperCase().contains(textoBusqueda.toUpperCase())){					
+//					listaExcel.add(terc);
+//				}
+//			}
+//			
+//		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//		
+//		return new ModelAndView("excelViewTerceros", "tercerosExcel", listaExcel);
+//    }
+	
+	
+	@RequestMapping(value = "/facturacionExcel", method = RequestMethod.GET)
+	@ResponseBody
+	public void downloadExcel(HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IOException, InvalidFormatException, IllegalAccessException, IllegalArgumentException, NoSuchMethodException, SecurityException {
+		
+        String columnasAMostrar = "periodo; tercero; agencia; actividad; ventaAgencia; compraAgencia; margen; ventaSap";
+        super.descargarExcel(request, response, "facturacion.xls", "facturacion", columnasAMostrar);
+        
+	}
 }

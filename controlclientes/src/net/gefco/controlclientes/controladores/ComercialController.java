@@ -1,11 +1,14 @@
 package net.gefco.controlclientes.controladores;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import net.gefco.controlclientes.modelo.Comercial;
@@ -16,6 +19,7 @@ import net.gefco.controlclientes.negocio.SuiviEsService;
 import net.gefco.controlclientes.util.AbstractDataTable;
 import net.gefco.controlclientes.util.DataTableColumn;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -222,25 +226,34 @@ public class ComercialController extends AbstractDataTable<Comercial, ComercialS
 	}
 	
 	
+//	@RequestMapping(value = "/comercialesExcel", method = RequestMethod.GET)
+//    public ModelAndView descargarExcel() {
+//		
+//		List <Comercial> listaExcel = new ArrayList<Comercial>();
+//		
+//		//Aplicar filtro
+//		try {
+//			for(Comercial terc : comercialService.listadoOrdenado(dt_orden)){
+//				if(terc.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
+//					listaExcel.add(terc);
+//				}
+//			}
+//			
+//		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//		
+//		return new ModelAndView("excelViewComerciales", "comercialesExcel", listaExcel);
+//    }
+	
 	@RequestMapping(value = "/comercialesExcel", method = RequestMethod.GET)
-    public ModelAndView descargarExcel() {
+	@ResponseBody
+	public void downloadExcel(HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IOException, InvalidFormatException, IllegalAccessException, IllegalArgumentException, NoSuchMethodException, SecurityException {
 		
-		List <Comercial> listaExcel = new ArrayList<Comercial>();
-		
-		//Aplicar filtro
-		try {
-			for(Comercial terc : comercialService.listadoOrdenado(dt_orden)){
-				if(terc.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
-					listaExcel.add(terc);
-				}
-			}
-			
-		} catch ( SecurityException | IllegalArgumentException	| InvocationTargetException e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		return new ModelAndView("excelViewComerciales", "comercialesExcel", listaExcel);
-    }
+        String columnasAMostrar = "codigo; nombre; agencia; tipo; suiviEs";
+        super.descargarExcel(request, response, "comerciales.xls", "comerciales", columnasAMostrar);
+        
+	}
 	
 }

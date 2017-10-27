@@ -1,11 +1,23 @@
 package net.gefco.controlclientes.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+//*****************************************************
+//VERSION AbstractDataTable: 2017.10.27
+//*****************************************************
 
 public abstract class AbstractDataTable<T, Service> {
 	
@@ -16,7 +28,7 @@ public abstract class AbstractDataTable<T, Service> {
 	protected List< Object > dt_lista 		= new ArrayList< Object >();
 	protected Class<?> beanClassCustom 		= null;
 	
-	//Paginación
+	//PaginaciÃ³n
 	protected int dt_paginaActual			= 1;
 	protected int dt_numeroPaginas			= 0;
 	protected int dt_registrosPorPagina		= 50;
@@ -36,42 +48,6 @@ public abstract class AbstractDataTable<T, Service> {
 	
 	public AbstractDataTable() {
 		super();		
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private Object ejecutarMetodo (Object instanciaClase, String metodo, Object [] parametros) throws 	InvocationTargetException {
-
-		Class tipoClase 	= instanciaClase.getClass();
-		
-		Method 		m 		= null;
-		Object 		r		= null;
-		
-		try{
-			
-			if (parametros.length == 0) {
-				
-				m = tipoClase.getMethod(metodo);
-				r = m.invoke(instanciaClase);
-							
-			} else {
-	
-				Class [] clasesParametros 	= new Class [parametros.length];
-				
-				for (int i = 0; i < parametros.length; i++) {
-					
-					clasesParametros [i] =parametros[i].getClass();
-				}
-				
-				m = tipoClase.getMethod(metodo, clasesParametros);
-				r = m.invoke(instanciaClase, parametros);
-				
-			}
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException |IllegalArgumentException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-		
-		return r;		
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -95,7 +71,7 @@ public abstract class AbstractDataTable<T, Service> {
 			
 		}
 		
-	    beanClassCustom = CfgUtil.createBeanClass("net.gefco.controlclientes." + dt_paginaLista, beanCustomProperties);
+	    beanClassCustom = ReflexionUtil.createBeanClass("net.gefco.controlclientes." + dt_paginaLista, beanCustomProperties);
 	    
 	    hql = hql + " from " + dt_HQLfrom;
 	    
@@ -133,8 +109,7 @@ public abstract class AbstractDataTable<T, Service> {
 //		
 //	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected void filtrarLista () throws InvocationTargetException {	
+	private String calcularOrdenHQL(){
 		
 		String ordenHQL = "";
 		
@@ -150,11 +125,17 @@ public abstract class AbstractDataTable<T, Service> {
 		
 			ordenHQL = dt_columnas.get( dt_orden).getBeanCustomProyeccion();
 		}
+    
+		return ordenHQL;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private String calcularWhereHQL(){
 		
-		String where = "";
+		String whereHQL = "";
 		
 		if(dt_textoBusqueda.equals("")){
-			where = " where 1=1";
+			whereHQL = " where 1=1";
 			
 		} else {
 			for (Map.Entry entry : dt_columnas.entrySet()) {
@@ -165,34 +146,22 @@ public abstract class AbstractDataTable<T, Service> {
 					continue;
 				}
 				
-				where = (where.equals("") ? "" : where + ", ") + columna.getBeanCustomProyeccion();
+				whereHQL = (whereHQL.equals("") ? "" : whereHQL + ", ") + columna.getBeanCustomProyeccion();
 
 			}
-			where = " where CONCAT(" + where + ") like '%" + dt_textoBusqueda + "%'";
+			whereHQL = " where CONCAT(" + whereHQL + ") like '%" + dt_textoBusqueda + "%'";
 		} 
-			
-		//Incluir where en hql
-		if ( hql.indexOf(" where ") > -1) {
-			hql = hql.substring(0, hql.indexOf(" where ")) + where;
-		} else {
-			hql = hql + where;
-		}
-		
-		List<Object> resultado 	= new ArrayList<Object>();
-		Long totalRegistros		= (Long) ejecutarMetodo (dt_service, "totalRegistros",  new Object[] {hql});
-		List<Object[]> lista 	= (List<Object[]>) ejecutarMetodo (dt_service, "listadoClaseCustomOrdenado",  new Object[] {hql, ordenHQL});
-		
-		dt_totalRegistros = totalRegistros;
-		if(lista.size() % dt_registrosPorPagina == 0){
-			dt_numeroPaginas = (int) (totalRegistros / dt_registrosPorPagina);
-		}else{
-			dt_numeroPaginas = (int) (totalRegistros / dt_registrosPorPagina + 1);
-		}
-		lista =  (List<Object[]>) ejecutarMetodo (dt_service, "listadoClaseCustomPaginado", new Object[] {hql, (dt_paginaActual - 1) * dt_registrosPorPagina, dt_registrosPorPagina, ordenHQL});
-	
-		try {
-//				Method metodos[] = beanClassCustom.getDeclaredMethods();
 
+		return whereHQL;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	private List< Object > convertirAListaClaseCustom (List<Object[]> lista) throws InvocationTargetException {	
+
+		List<Object> resultado 	= new ArrayList<Object>();
+		try {
+	//			Method metodos[] = beanClassCustom.getDeclaredMethods();
+	
 			 Object obj;
 			 obj = beanClassCustom.newInstance();
 			
@@ -203,7 +172,7 @@ public abstract class AbstractDataTable<T, Service> {
 					String metodo = "set" + entry.getKey().toString().substring(0,1).toUpperCase() + entry.getKey().toString().substring(1);
 					beanClassCustom.getMethod(metodo, (Class<?>) entry.getValue()).invoke(obj, registro [contadorColumnas] );
 					contadorColumnas ++;
-				}
+				 }
 				
 				resultado.add( obj);				 
 			 }
@@ -214,7 +183,39 @@ public abstract class AbstractDataTable<T, Service> {
 			throw new RuntimeException(e);
 		}
 		
-		dt_lista = resultado;
+		return resultado;
+	}
+	
+	@SuppressWarnings({ "unchecked"})
+	protected void filtrarLista () throws InvocationTargetException {	
+		
+		String ordenHQL = calcularOrdenHQL();
+		
+		String whereHQL = calcularWhereHQL();		
+		
+		//Incluir where en hql
+		if ( hql.indexOf(" where ") > -1) {
+			hql = hql.substring(0, hql.indexOf(" where ")) + whereHQL;
+		} else {
+			hql = hql + whereHQL;
+		}	
+	
+		Long totalRegistros		= (Long) ReflexionUtil.ejecutarMetodo (dt_service, "totalRegistros",  new Object[] {hql});
+		
+		dt_totalRegistros		 = totalRegistros
+		;
+		if(totalRegistros % dt_registrosPorPagina == 0){
+			dt_numeroPaginas = (int) (totalRegistros / dt_registrosPorPagina)
+			;
+		}else{
+			dt_numeroPaginas = (int) (totalRegistros / dt_registrosPorPagina + 1)
+			;
+		}
+		
+		List<Object[]> lista	 =  (List<Object[]>) ReflexionUtil.ejecutarMetodo (dt_service, "listadoClaseCustomPaginado", new Object[] {hql, (dt_paginaActual - 1) * dt_registrosPorPagina, dt_registrosPorPagina, ordenHQL});
+	
+		
+		dt_lista = convertirAListaClaseCustom (lista);;
 	}
     
 	protected void irAPrimeraPagina(){		
@@ -289,6 +290,57 @@ public abstract class AbstractDataTable<T, Service> {
 		}
 		dt_orden = nuevoOrden + (nuevoOrden.endsWith(" ASC") || nuevoOrden.endsWith(" DESC") ? "" : " ASC");
 		
+	}
+	
+	
+		
+	@SuppressWarnings({ "unchecked" })
+	public void descargarExcel(HttpServletRequest request, HttpServletResponse response, 
+			String nombreFichero, String nombrePestana,  String columnasAMostrar) throws InvocationTargetException, IOException {
+		
+		String ordenHQL = calcularOrdenHQL();
+		
+		String whereHQL = calcularWhereHQL();		
+		
+		//Incluir where en hql
+		if ( hql.indexOf(" where ") > -1) {
+			hql = hql.substring(0, hql.indexOf(" where ")) + whereHQL;
+		} else {
+			hql = hql + whereHQL;
+		}
+		
+		List< Object > datos 	= new ArrayList< Object >();	
+		List<Object[]> lista 	= (List<Object[]>) ReflexionUtil.ejecutarMetodo (dt_service, "listadoClaseCustomOrdenado",  new Object[] {hql, ordenHQL});
+	
+		datos = convertirAListaClaseCustom(lista);
+
+		//preparar el response
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("Content-disposition", "attachment; filename=" + nombreFichero);
+		
+		ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		
+		if (nombreFichero.toUpperCase().endsWith(".XLS")) {
+			//Generar libro Excel
+			Workbook libro = ExcelUtil.generarXLS(dt_columnas, datos, columnasAMostrar, nombrePestana);
+		
+			//copiar libro excel al response
+		    libro.write(outByteStream);
+			
+		} else  if (nombreFichero.toUpperCase().endsWith(".XLSX")) {
+			//Generar libro Excel
+			XSSFWorkbook libroXLSX 		= ExcelUtil.generarXLSX(dt_columnas, datos, columnasAMostrar, nombrePestana);
+			
+			//copiar libro al response
+		    libroXLSX.write(outByteStream);
+
+		}
+		
+		//Incluir excel en el response
+		byte[] outArray = outByteStream.toByteArray();
+	    OutputStream outStream = response.getOutputStream();
+	    outStream.write(outArray);
+	    outStream.flush();
 	}
 	
 }
