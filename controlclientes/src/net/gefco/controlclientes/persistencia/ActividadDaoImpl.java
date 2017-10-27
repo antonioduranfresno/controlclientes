@@ -2,7 +2,7 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
-import net.gefco.controlclientes.modelo.Agencia;
+import net.gefco.controlclientes.modelo.Actividad;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Repository
-public class AgenciaDaoImpl implements AgenciaDao{
+public class ActividadDaoImpl implements ActividadDao{
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -25,47 +25,47 @@ public class AgenciaDaoImpl implements AgenciaDao{
 	}
 
 	@Override
-	public void guardar(Agencia agencia) {
-		getSession().save(agencia);	
+	public void guardar(Actividad actividad) {
+		getSession().save(actividad);	
 	}
 
 	@Override
-	public void actualizar(Agencia agencia) {
-		getSession().update(agencia);
+	public void actualizar(Actividad actividad) {
+		getSession().update(actividad);
 	}
 
 	@Override
-	public void eliminar(Agencia agencia) {
-		getSession().delete(agencia);
+	public void eliminar(Actividad actividad) {
+		getSession().delete(actividad);
 	}
 
 	@Override
-	public Agencia buscarId(Integer id) {
+	public Actividad buscarId(Integer id) {
 		
-		Criteria crit = getSession().createCriteria(Agencia.class);
+		Criteria crit = getSession().createCriteria(Actividad.class);
 		
 		crit.add(Restrictions.eq("id", id));
 		
-		return (Agencia) crit.uniqueResult();
+		return (Actividad) crit.uniqueResult();
 	}
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Agencia> listado() {		
+	public List<Actividad> listado() {		
 		
-		Query query = getSession().createQuery("from Agencia");
+		Query query = getSession().createQuery("from Actividad");
 				
 		return query.list();
 	}
 		
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Agencia> listadoOrdenado(String campoOrden) {		
+	public List<Actividad> listadoOrdenado(String campoOrden) {		
 		
 		if (campoOrden.equals("")) {
 			return listado();
 		} else {
-			Query query = getSession().createQuery("from Agencia order by "+campoOrden);
+			Query query = getSession().createQuery("from Actividad order by "+campoOrden);
 		
 			return query.list();
 		}
@@ -74,26 +74,26 @@ public class AgenciaDaoImpl implements AgenciaDao{
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Agencia> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
+	public List<Actividad> listadoPaginado(Integer primero, Integer maximo, String campoOrden) {
 		String orden = "";
 		if (campoOrden.equals("")) {
 			orden = "";
 		} else {
 			orden = " order by " + campoOrden;
 		}
-		Query query = getSession().createQuery("from Agencia" + orden).setFirstResult(primero).setMaxResults(maximo);
+		Query query = getSession().createQuery("from Actividad" + orden).setFirstResult(primero).setMaxResults(maximo);
 				
 		return query.list();
 	}
 
 	@Override
-	public Agencia buscarCodigo(String codigo) {
+	public Actividad buscarCodigo(String codigo) {
 		
-		Criteria crit = getSession().createCriteria(Agencia.class);
+		Criteria crit = getSession().createCriteria(Actividad.class);
 		
-		crit.add(Restrictions.eq("agen_codigo", codigo));
+		crit.add(Restrictions.eq("acti_codigo", codigo));
 		
-		return (Agencia) crit.uniqueResult();
+		return (Actividad) crit.uniqueResult();
 	}
 	
 }

@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("usuarioSesion")
 public class TerceroController extends AbstractDataTable<Tercero, TerceroService> {
 	
-	
 	@Autowired
 	private TerceroService 				terceroService;
 	
@@ -60,17 +59,17 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		dt_HQLfrom			= "Tercero t";
 		
 		dt_columnas = new LinkedHashMap<String, DataTableColumn>();
-		
-		dt_columnas.put("id",  					new DataTableColumn("Id", 			Integer.class, "t.id"));		
-		dt_columnas.put("codigo", 				new DataTableColumn("C骴igo", 		String.class,  "t.terc_codigo"));		
-		dt_columnas.put("razonSocial", 			new DataTableColumn("Raz髇 Social",	String.class,  "t.terc_razonSocial"));		
-		dt_columnas.put("grupo", 				new DataTableColumn("Grupo", 		String.class,  "t.terceroGrupo.tegr_nombre"));		
-		dt_columnas.put("tipo", 				new DataTableColumn("Tipo", 		String.class,  "t.terceroTipo.teti_nombre"));		
-		dt_columnas.put("marketLine", 			new DataTableColumn("Market Line",	String.class,  "t.terceroMarketLine.teml_nombre"));		
-		dt_columnas.put("maf", 					new DataTableColumn("MAF", 			String.class,  "(CASE WHEN (t.terc_Maf = true) THEN 'SI' ELSE 'NO' END)" ));		
-		dt_columnas.put("noValido", 			new DataTableColumn("No v醠.", 		String.class,  "(CASE WHEN (t.terc_noValido = true) THEN 'SI' ELSE 'NO' END)"));
-				
-		//No olvidar llamar a este m閠odo despu閟 de configurar las columnas.
+
+		dt_columnas.put("id",  			new DataTableColumn("Id", 			Integer.class, "t.id"));		
+		dt_columnas.put("codigo", 		new DataTableColumn("C贸digo", 		String.class,  "t.terc_codigo"));		
+		dt_columnas.put("razonSocial", 	new DataTableColumn("Raz贸n Social",	String.class,  "t.terc_razonSocial"));		
+		dt_columnas.put("grupo", 		new DataTableColumn("Grupo", 		String.class,  "t.terceroGrupo.tegr_nombre"));		
+		dt_columnas.put("tipo", 		new DataTableColumn("Tipo", 		String.class,  "t.terceroTipo.teti_nombre"));		
+		dt_columnas.put("marketLine", 	new DataTableColumn("Market Line",	String.class,  "t.terceroMarketLine.teml_nombre"));		
+		dt_columnas.put("maf", 			new DataTableColumn("MAF", 			String.class,  "(CASE WHEN (t.terc_Maf = true) THEN 'SI' ELSE 'NO' END)" ));		
+		dt_columnas.put("noValido", 	new DataTableColumn("No v谩l.", 		String.class,  "(CASE WHEN (t.terc_noValido = true) THEN 'SI' ELSE 'NO' END)"));
+
+		//No olvidar llamar a este m茅todo despu茅s de configurar las columnas.
 		iniciarControllerAbstract();
 		
 	}
@@ -155,17 +154,17 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 	public String aceptar(Model model,@ModelAttribute("tercero") @Valid Tercero tercero, BindingResult result) throws InvocationTargetException {
 		
 		if(tercero.getTerceroGrupo().getId()==0){			
-			FieldError error = new FieldError("tercero", "terceroGrupo.id", "Por favor, seleccione una opci髇");			
+			FieldError error = new FieldError("tercero", "terceroGrupo.id", "Por favor, seleccione una opci贸n");			
 			result.addError(error);			
 		}
 		
 		if(tercero.getTerceroMarketLine().getId()==0){			
-			FieldError error = new FieldError("tercero", "terceroMarketLine.id", "Por favor, seleccione una opci髇");			
+			FieldError error = new FieldError("tercero", "terceroMarketLine.id", "Por favor, seleccione una opci贸n");			
 			result.addError(error);			
 		}
 		
 		if(tercero.getTerceroTipo().getId()==0){			
-			FieldError error = new FieldError("tercero", "terceroTipo.id", "Por favor, seleccione una opci髇");			
+			FieldError error = new FieldError("tercero", "terceroTipo.id", "Por favor, seleccione una opci贸n");			
 			result.addError(error);			
 		}
 		
@@ -178,14 +177,14 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 
 		try{
 				
-			//Creaci髇
+			//Creaci贸n
 			if(tercero.getId()==null || tercero.getId()==0){
 			
 				tercero.setId(0);	
 				terceroService.guardar(tercero);				
 				tercero = new Tercero();
                 
-			//Actualizaci髇	
+			//Actualizaci贸n	
 			}else{				
 				terceroService.actualizar(tercero);				
 			}
@@ -196,9 +195,9 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
         	 
                 FieldError error;
                 if(e.getCause().toString().contains("key 2") || e.getCause().toString().contains("terc_codigo")){
-                	error = new FieldError("tercero", "terc_codigo", "C骴igo de tercero ya existente.");
+                	error = new FieldError("tercero", "terc_codigo", "C贸digo de tercero ya existente.");
                 }else if(e.getCause().toString().contains("key 3") || e.getCause().toString().contains("terc_razonSocial")){
-                	error = new FieldError("tercero", "terc_razonSocial", "Raz髇 Social ya existente.");
+                	error = new FieldError("tercero", "terc_razonSocial", "Raz贸n Social ya existente.");
                 }else{
                 	error = new FieldError("tercero", "terc_codigo", "error no controlado: " + e.getCause().getMessage());
                 }

@@ -109,4 +109,13 @@ public class TerceroDaoImpl implements TerceroDao{
 		return query.list();
 	}
 	
+	@Override
+	public Tercero buscarCodigo(String codigo) {
+		
+		Criteria crit = getSession().createCriteria(Tercero.class);
+		
+		crit.add(Restrictions.eq("terc_codigo", codigo));
+		
+		return (Tercero) crit.uniqueResult();
+	}
 }

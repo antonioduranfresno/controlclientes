@@ -32,7 +32,7 @@
                             <a href="facturacionLista" ><i class="fa fa-money fa-fw"></i> FACTURACIÓN</a>
                         </li>
                         <li>
-                            <a href="rutaLista" ><i class="fa fa-folder-open-o fa-fw"></i> FICHEROS</a>
+                            <a href="importacion" ><i class="fa fa-folder-open-o fa-fw"></i> FICHEROS</a>
                         </li>   
                         <li>
                             <a href="rutaLista" ><i class="fa fa-area-chart fa-fw"></i> INFORMES</a>

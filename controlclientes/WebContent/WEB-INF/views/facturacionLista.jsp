@@ -133,8 +133,8 @@
 						<td>${c.actividad}</td>
 						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.ventaAgencia}" /></td>
 						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.compraAgencia}" /></td>						
-						<td class="text-right"><fmt:formatNumber type = "percent" maxIntegerDigits="2" maxFractionDigits = "2" value = "" /></td>
-						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.margen}" /></td>						
+						<td class="text-right"><fmt:formatNumber type = "percent" maxIntegerDigits="2" maxFractionDigits = "2" value = "${c.margen}" /></td>
+						<td class="text-right"><fmt:formatNumber type = "number" pattern = "##,###,##0.00" value = "${c.ventaSap}" /></td>						
 						<td style="text-align: center;"><a href="facturacionForm?idFacturacion=${c.id}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
 					</tr>
 			

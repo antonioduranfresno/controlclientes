@@ -2,7 +2,10 @@ package net.gefco.controlclientes.negocio;
 
 import javax.annotation.PostConstruct;
 
+import net.gefco.controlclientes.modelo.Actividad;
+import net.gefco.controlclientes.modelo.Agencia;
 import net.gefco.controlclientes.modelo.Facturacion;
+import net.gefco.controlclientes.modelo.Tercero;
 import net.gefco.controlclientes.persistencia.FacturacionDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +23,8 @@ public class FacturacionService extends AbstractService<Facturacion, Facturacion
 		
 	}
 
+	public Facturacion buscarFacturacion(Integer periodo, Tercero tercero, Agencia agencia, Actividad actividad){
+		return facturacionDao.buscarFacturacion(periodo, tercero, agencia, actividad);
+	}
+	
 }
