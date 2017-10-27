@@ -1,11 +1,12 @@
 package net.gefco.controlclientes.controladores;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import net.gefco.controlclientes.modelo.TerceroGrupo;
@@ -13,6 +14,7 @@ import net.gefco.controlclientes.negocio.TerceroGrupoService;
 import net.gefco.controlclientes.util.AbstractDataTable;
 import net.gefco.controlclientes.util.DataTableColumn;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -27,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @Scope("session")
@@ -185,18 +186,27 @@ public class TerceroGrupoController extends AbstractDataTable<TerceroGrupo, Terc
 	}
 	
 	
+//	@RequestMapping(value = "/tercerosGrupoExcel", method = RequestMethod.GET)
+//    public ModelAndView descargarExcel() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+//		List <TerceroGrupo> listaExcel = new ArrayList<TerceroGrupo>();
+//		
+//		//Aplicar filtro
+//		for(TerceroGrupo tg : terceroGrupoService.listadoOrdenado(dt_orden)){
+//			if(tg.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
+//				listaExcel.add(tg);
+//			}
+//		}
+//		
+//		return new ModelAndView("excelViewTercerosGrupo", "tercerosGrupoExcel", listaExcel);
+//    }
+	
 	@RequestMapping(value = "/tercerosGrupoExcel", method = RequestMethod.GET)
-    public ModelAndView descargarExcel() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		List <TerceroGrupo> listaExcel = new ArrayList<TerceroGrupo>();
+	@ResponseBody
+	public void downloadExcel(HttpServletRequest request, HttpServletResponse response) throws InvocationTargetException, IOException, InvalidFormatException, IllegalAccessException, IllegalArgumentException, NoSuchMethodException, SecurityException {
 		
-		//Aplicar filtro
-		for(TerceroGrupo tg : terceroGrupoService.listadoOrdenado(dt_orden)){
-			if(tg.toString().toUpperCase().contains(dt_textoBusqueda.toUpperCase())){					
-				listaExcel.add(tg);
-			}
-		}
-		
-		return new ModelAndView("excelViewTercerosGrupo", "tercerosGrupoExcel", listaExcel);
-    }
+        String columnasAMostrar = "nombre";
+        super.descargarExcel(request, response, "tercerosGrupo.xls", "Grupos", columnasAMostrar);
+        
+	}
 	
 }
