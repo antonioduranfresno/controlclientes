@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractDataTable<T, Service> {
+	
 	static final String CLASS_ORDEN_DESCENDENTE 	= "glyphicon glyphicon-sort-by-order-alt";
 	static final String CLASS_ORDEN_ASCENDENTE 		= "glyphicon glyphicon-sort-by-order";
 	static final String CLASS_ORDEN_SIN_ORDEN 		= "";
-	
 	
 	protected List< Object > dt_lista 		= new ArrayList< Object >();
 	protected Class<?> beanClassCustom 		= null;
@@ -28,34 +28,28 @@ public abstract class AbstractDataTable<T, Service> {
 	protected Service dt_service			= null;
 	protected String dt_paginaLista			= null;
     
-	protected LinkedHashMap<String, DataTableColumn> dt_columnas		= new LinkedHashMap<String, DataTableColumn>();
+	protected LinkedHashMap<String, DataTableColumn> dt_columnas   = new LinkedHashMap<String, DataTableColumn>();
 	
-	private LinkedHashMap<String, Class<?>> beanCustomProperties 		= new LinkedHashMap<String, Class<?>>();
-	private String hql =null;
+	private   LinkedHashMap<String, Class<?>> beanCustomProperties = new LinkedHashMap<String, Class<?>>();
+	
+	private String hql = null;
 	
 	public AbstractDataTable() {
-		super();
-		
+		super();		
 	}
-	
-//	Ejemplo de como rellenar una instancia de beanClassCustom
-//	 obj = beanClassCustom.newInstance();
-//	 for (Map.Entry entry : beanCustomProperties.entrySet()) {
-//		String metodo = "set" + entry.getKey().toString().substring(0,1).toUpperCase() + entry.getKey().toString().substring(1);
-//		beanClassCustom.getMethod(metodo, (Class<?>) entry.getValue()).invoke(obj, registro [contadorColumnas] );
-//		contadorColumnas ++;
-//	}
-//	
-//	System.out.println( obj);	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private Object ejecutarMetodo (Object instanciaClase, String metodo, Object [] parametros) throws 	InvocationTargetException {
 
 		Class tipoClase 	= instanciaClase.getClass();
+		
 		Method 		m 		= null;
 		Object 		r		= null;
+		
 		try{
+			
 			if (parametros.length == 0) {
+				
 				m = tipoClase.getMethod(metodo);
 				r = m.invoke(instanciaClase);
 							
@@ -77,8 +71,7 @@ public abstract class AbstractDataTable<T, Service> {
 			throw new RuntimeException(e);
 		}
 		
-		return r;
-		
+		return r;		
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -144,6 +137,7 @@ public abstract class AbstractDataTable<T, Service> {
 	protected void filtrarLista () throws InvocationTargetException {	
 		
 		String ordenHQL = "";
+		
 		if (dt_orden.contains(" ASC")) {
 			
 			ordenHQL = dt_columnas.get( dt_orden.replace(" ASC", "").replace(" DESC", "")).getBeanCustomProyeccion() + " ASC";
@@ -157,8 +151,8 @@ public abstract class AbstractDataTable<T, Service> {
 			ordenHQL = dt_columnas.get( dt_orden).getBeanCustomProyeccion();
 		}
 		
-
 		String where = "";
+		
 		if(dt_textoBusqueda.equals("")){
 			where = " where 1=1";
 			
@@ -184,8 +178,6 @@ public abstract class AbstractDataTable<T, Service> {
 			hql = hql + where;
 		}
 		
-		
-			
 		List<Object> resultado 	= new ArrayList<Object>();
 		Long totalRegistros		= (Long) ejecutarMetodo (dt_service, "totalRegistros",  new Object[] {hql});
 		List<Object[]> lista 	= (List<Object[]>) ejecutarMetodo (dt_service, "listadoClaseCustomOrdenado",  new Object[] {hql, ordenHQL});

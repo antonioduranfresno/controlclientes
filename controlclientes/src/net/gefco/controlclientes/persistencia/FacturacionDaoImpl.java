@@ -2,7 +2,10 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
+import net.gefco.controlclientes.modelo.Actividad;
+import net.gefco.controlclientes.modelo.Agencia;
 import net.gefco.controlclientes.modelo.Facturacion;
+import net.gefco.controlclientes.modelo.Tercero;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -47,6 +50,19 @@ public class FacturacionDaoImpl implements FacturacionDao{
 		crit.add(Restrictions.eq("id", id));
 		
 		return (Facturacion) crit.uniqueResult();
+	}
+	
+	@Override
+	public Facturacion buscarFacturacion(Integer periodo, Tercero tercero, Agencia agencia, Actividad actividad){
+		
+		Criteria crit = getSession().createCriteria(Facturacion.class);
+		
+		crit.add(Restrictions.eq("fact_periodo", periodo));
+		crit.add(Restrictions.eq("tercero", tercero));
+		crit.add(Restrictions.eq("agencia", agencia));
+		crit.add(Restrictions.eq("actividad", actividad));
+				
+		return (Facturacion) crit.uniqueResult();		
 	}
 	
 	@Override

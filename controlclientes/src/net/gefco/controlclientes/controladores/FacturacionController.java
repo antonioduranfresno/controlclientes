@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("usuarioSesion")
 public class FacturacionController extends AbstractDataTable<Facturacion, FacturacionService> {
 	
-	
 	@Autowired
 	private FacturacionService 			facturacionService;
 

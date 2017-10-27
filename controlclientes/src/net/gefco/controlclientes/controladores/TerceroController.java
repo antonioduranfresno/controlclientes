@@ -36,7 +36,6 @@ import org.springframework.web.servlet.ModelAndView;
 @SessionAttributes("usuarioSesion")
 public class TerceroController extends AbstractDataTable<Tercero, TerceroService> {
 	
-	
 	@Autowired
 	private TerceroService 				terceroService;
 	
@@ -59,14 +58,14 @@ public class TerceroController extends AbstractDataTable<Tercero, TerceroService
 		
 		dt_columnas = new LinkedHashMap<String, DataTableColumn>();
 		
-		dt_columnas.put("id",  					new DataTableColumn("Id", 			Integer.class, "t.id"));		
-		dt_columnas.put("codigo", 				new DataTableColumn("Código", 		String.class,  "t.terc_codigo"));		
-		dt_columnas.put("razonSocial", 			new DataTableColumn("Razón Social",	String.class,  "t.terc_razonSocial"));		
-		dt_columnas.put("grupo", 				new DataTableColumn("Grupo", 		String.class,  "t.terceroGrupo.tegr_nombre"));		
-		dt_columnas.put("tipo", 				new DataTableColumn("Tipo", 		String.class,  "t.terceroTipo.teti_nombre"));		
-		dt_columnas.put("marketLine", 			new DataTableColumn("Market Line",	String.class,  "t.terceroMarketLine.teml_nombre"));		
-		dt_columnas.put("maf", 					new DataTableColumn("MAF", 			String.class,  "(CASE WHEN (t.terc_Maf = true) THEN 'SI' ELSE 'NO' END)" ));		
-		dt_columnas.put("noValido", 			new DataTableColumn("No vál.", 		String.class,  "(CASE WHEN (t.terc_noValido = true) THEN 'SI' ELSE 'NO' END)"));
+		dt_columnas.put("id",  			new DataTableColumn("Id", 			Integer.class, "t.id"));		
+		dt_columnas.put("codigo", 		new DataTableColumn("Código", 		String.class,  "t.terc_codigo"));		
+		dt_columnas.put("razonSocial", 	new DataTableColumn("Razón Social",	String.class,  "t.terc_razonSocial"));		
+		dt_columnas.put("grupo", 		new DataTableColumn("Grupo", 		String.class,  "t.terceroGrupo.tegr_nombre"));		
+		dt_columnas.put("tipo", 		new DataTableColumn("Tipo", 		String.class,  "t.terceroTipo.teti_nombre"));		
+		dt_columnas.put("marketLine", 	new DataTableColumn("Market Line",	String.class,  "t.terceroMarketLine.teml_nombre"));		
+		dt_columnas.put("maf", 			new DataTableColumn("MAF", 			String.class,  "(CASE WHEN (t.terc_Maf = true) THEN 'SI' ELSE 'NO' END)" ));		
+		dt_columnas.put("noValido", 	new DataTableColumn("No vál.", 		String.class,  "(CASE WHEN (t.terc_noValido = true) THEN 'SI' ELSE 'NO' END)"));
 		
 		//No olvidar llamar a este método después de configurar las columnas.
 		iniciarControllerAbstract();
