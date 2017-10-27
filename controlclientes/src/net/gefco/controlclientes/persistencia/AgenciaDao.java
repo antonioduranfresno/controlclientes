@@ -19,5 +19,7 @@ public interface AgenciaDao {
 	public List<Agencia> 	listadoOrdenado(String campoOrden);
 	
 	public List<Agencia> 	listadoPaginado(Integer primero, Integer maximo, String campoOrden);
+	
+	public Agencia 			buscarCodigo(String codigo);
 
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 public abstract class AbstractService <T, Dao>{
 
-		
 	protected Dao dao				= null;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -17,6 +16,7 @@ public abstract class AbstractService <T, Dao>{
 		Object 		r		= null;
 		
 		try {
+			
 			if (parametros.length == 0) {
 				m = tipoClase.getMethod(metodo);
 				r = m.invoke(instanciaClase);
@@ -46,64 +46,56 @@ public abstract class AbstractService <T, Dao>{
 		ejecutarMetodo (dao, "guardar", new Object[] {t});			
 	}
 	
-	public void actualizar(T t) throws InvocationTargetException {	
-		
+	public void actualizar(T t) throws InvocationTargetException {
 		ejecutarMetodo (dao, "actualizar", new Object[] {t});
-			
 	}	
 	
 	public void eliminar(T t) throws InvocationTargetException {
-		ejecutarMetodo (dao, "eliminar", new Object[] {t});
-			
+		ejecutarMetodo (dao, "eliminar", new Object[] {t});			
 	}
 	
 	@SuppressWarnings("unchecked")
-	public T buscarId(Integer id) throws InvocationTargetException {	
-		
+	public T buscarId(Integer id) throws InvocationTargetException {
 		return (T) ejecutarMetodo (dao, "buscarId", new Object[] {id});
-			
+	}
+
+	@SuppressWarnings("unchecked")
+	public T buscarCodigo(String codigo) throws InvocationTargetException {
+		return (T) ejecutarMetodo (dao, "buscarCodigo", new Object[] {codigo});
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<T> listado() throws InvocationTargetException {
-		return (List<T>) ejecutarMetodo (dao, "listado", new Object[] {});
-			
+		return (List<T>) ejecutarMetodo (dao, "listado", new Object[] {});			
 	}
 	
-	
 	public Long totalRegistros(String hql) throws InvocationTargetException {
-		return (Long) ejecutarMetodo (dao, "totalRegistros", new Object[] {hql});
-			
+		return (Long) ejecutarMetodo (dao, "totalRegistros", new Object[] {hql});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> listadoClaseCustom(String hql) throws InvocationTargetException {
-		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustom", new Object[] {hql});
-			
+		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustom", new Object[] {hql});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> listadoClaseCustomOrdenado(String hql, String campoOrden) throws InvocationTargetException {
-		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustomOrdenado", new Object[] {hql, campoOrden});
-			
+		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustomOrdenado", new Object[] {hql, campoOrden});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden) throws InvocationTargetException {
-		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustomPaginado", new Object[] {hql, primero, maximo, campoOrden});
-			
+		return (List<Object[]>) ejecutarMetodo (dao, "listadoClaseCustomPaginado", new Object[] {hql, primero, maximo, campoOrden});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<T> listadoOrdenado(String campoOrden) throws InvocationTargetException {	
-		return (List<T>) ejecutarMetodo (dao, "listadoOrdenado", new Object[] {campoOrden});
-			
+		return (List<T>) ejecutarMetodo (dao, "listadoOrdenado", new Object[] {campoOrden});			
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<T> listadoPaginado (Integer primero, Integer maximo, String campoOrden) throws InvocationTargetException {	
-		return (List<T>) ejecutarMetodo (dao, "listadoPaginado", new Object[] {primero, maximo, campoOrden});
-			
+		return (List<T>) ejecutarMetodo (dao, "listadoPaginado", new Object[] {primero, maximo, campoOrden});			
 	}
 	
 }

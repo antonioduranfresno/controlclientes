@@ -20,15 +20,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //*****************************************************
 
 public abstract class AbstractDataTable<T, Service> {
+	
 	static final String CLASS_ORDEN_DESCENDENTE 	= "glyphicon glyphicon-sort-by-order-alt";
 	static final String CLASS_ORDEN_ASCENDENTE 		= "glyphicon glyphicon-sort-by-order";
 	static final String CLASS_ORDEN_SIN_ORDEN 		= "";
 	
-	
 	protected List< Object > dt_lista 		= new ArrayList< Object >();
 	protected Class<?> beanClassCustom 		= null;
 	
-	//Paginación
+	//PaginaciÃ³n
 	protected int dt_paginaActual			= 1;
 	protected int dt_numeroPaginas			= 0;
 	protected int dt_registrosPorPagina		= 50;
@@ -40,26 +40,15 @@ public abstract class AbstractDataTable<T, Service> {
 	protected Service dt_service			= null;
 	protected String dt_paginaLista			= null;
     
-	protected LinkedHashMap<String, DataTableColumn> dt_columnas		= new LinkedHashMap<String, DataTableColumn>();
+	protected LinkedHashMap<String, DataTableColumn> dt_columnas   = new LinkedHashMap<String, DataTableColumn>();
 	
-	private LinkedHashMap<String, Class<?>> beanCustomProperties 		= new LinkedHashMap<String, Class<?>>();
-	private String hql =null;
+	private   LinkedHashMap<String, Class<?>> beanCustomProperties = new LinkedHashMap<String, Class<?>>();
+	
+	private String hql = null;
 	
 	public AbstractDataTable() {
-		super();
-		
+		super();		
 	}
-	
-//	Ejemplo de como rellenar una instancia de beanClassCustom
-//	 obj = beanClassCustom.newInstance();
-//	 for (Map.Entry entry : beanCustomProperties.entrySet()) {
-//		String metodo = "set" + entry.getKey().toString().substring(0,1).toUpperCase() + entry.getKey().toString().substring(1);
-//		beanClassCustom.getMethod(metodo, (Class<?>) entry.getValue()).invoke(obj, registro [contadorColumnas] );
-//		contadorColumnas ++;
-//	}
-//	
-//	System.out.println( obj);	
-	
 	
 	@SuppressWarnings("rawtypes")
 	protected void iniciarControllerAbstract(){
@@ -136,7 +125,7 @@ public abstract class AbstractDataTable<T, Service> {
 		
 			ordenHQL = dt_columnas.get( dt_orden).getBeanCustomProyeccion();
 		}
-		
+    
 		return ordenHQL;
 	}
 	
@@ -162,13 +151,13 @@ public abstract class AbstractDataTable<T, Service> {
 			}
 			whereHQL = " where CONCAT(" + whereHQL + ") like '%" + dt_textoBusqueda + "%'";
 		} 
-		
+
 		return whereHQL;
 	}
 	
 	@SuppressWarnings("rawtypes")
 	private List< Object > convertirAListaClaseCustom (List<Object[]> lista) throws InvocationTargetException {	
-		
+
 		List<Object> resultado 	= new ArrayList<Object>();
 		try {
 	//			Method metodos[] = beanClassCustom.getDeclaredMethods();
@@ -329,8 +318,10 @@ public abstract class AbstractDataTable<T, Service> {
 		response.setContentType("application/vnd.ms-excel");
 		response.setHeader("Content-disposition", "attachment; filename=" + nombreFichero);
 		
-		ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();		
-		if (nombreFichero.toUpperCase().endsWith(".XLS")) {			//Generar libro Excel
+		ByteArrayOutputStream outByteStream = new ByteArrayOutputStream();
+		
+		if (nombreFichero.toUpperCase().endsWith(".XLS")) {
+			//Generar libro Excel
 			Workbook libro = ExcelUtil.generarXLS(dt_columnas, datos, columnasAMostrar, nombrePestana);
 		
 			//copiar libro excel al response

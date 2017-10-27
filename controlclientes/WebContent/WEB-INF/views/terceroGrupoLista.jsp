@@ -75,7 +75,7 @@
 						
 				<thead>
 					<tr class="info">						
-						<th width="50%;">
+						<th width="88%;">
 							<a href="${columnas['nombre'].hrefOrden}">${columnas['nombre'].label} 
 								<span class="${columnas['nombre'].classOrden}"></span>								
 							</a>

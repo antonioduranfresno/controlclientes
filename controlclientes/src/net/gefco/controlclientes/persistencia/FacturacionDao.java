@@ -2,7 +2,10 @@ package net.gefco.controlclientes.persistencia;
 
 import java.util.List;
 
+import net.gefco.controlclientes.modelo.Actividad;
+import net.gefco.controlclientes.modelo.Agencia;
 import net.gefco.controlclientes.modelo.Facturacion;
+import net.gefco.controlclientes.modelo.Tercero;
 
 public interface FacturacionDao {
 
@@ -23,5 +26,7 @@ public interface FacturacionDao {
 	public List<Object[]>		listadoClaseCustomOrdenado(String hql, String campoOrden);
 	
 	public List<Object[]>		listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden);
+
+	public Facturacion 			buscarFacturacion(Integer periodo, Tercero tercero, Agencia agencia, Actividad actividad);
 
 }

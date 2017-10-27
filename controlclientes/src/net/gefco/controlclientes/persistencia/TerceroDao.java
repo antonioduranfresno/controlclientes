@@ -24,4 +24,6 @@ public interface TerceroDao {
 	
 	public List<Object[]>	listadoClaseCustomPaginado(String hql, Integer primero, Integer maximo, String campoOrden);
 
+	public Tercero 			buscarCodigo(String codigo);
+
 }

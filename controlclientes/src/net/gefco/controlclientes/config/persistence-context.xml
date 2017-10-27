@@ -22,7 +22,7 @@
 				
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 			    <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-			    <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/control_clientes_v2</prop>
+			    <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/control_clientes</prop>
 			    <prop key="hibernate.connection.username">root</prop>
 			    <prop key="hibernate.connection.password">root</prop>
 			    <prop key="hibernate.show_sql">false</prop>
